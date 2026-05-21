@@ -1,0 +1,717 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-family: 'DM Sans', sans-serif;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+body {
+  background-color: #b8cfe8;
+  font-size: 2rem;
+  background-image: url("https://wallpaperaccess.com/full/2421274.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  background-position: center;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+header nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  list-style-type: none;
+  width: 100%;
+  padding: 0;
+}
+
+header nav a {
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #ff9f1a;
+  letter-spacing: 2px;
+  font-weight: bold;
+  padding: 4px 12px;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 16px;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  width: 86px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.desktop-icon img {
+  width: 86px;
+  height: 86px;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.taskbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #d4c6b3;
+  border-top: 2px solid #fff;
+  padding: 2px 4px;
+  height: 46px;
+}
+
+.taskbar-divider {
+  flex: 1;
+}
+
+.taskbar-clock {
+  background: #beb2a1;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 18px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+}
+
+.win-window {
+  position: fixed;
+  background: #f0ece8;
+  border: 1px solid #999;
+  border-right-color: #555;
+  border-bottom-color: #555;
+  box-shadow: 2px 2px 0 #333;
+  z-index: 100;
+  font-size: 12px;
+  user-select: none;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.win-titlebar {
+  background: #e8e4e0;
+  border-bottom: 1px solid #999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3px 6px;
+  cursor: move;
+  gap: 6px;
+}
+
+.win-title {
+  flex: 1;
+  text-align: center;
+  font-size: 11px;
+  color: #333;
+  letter-spacing: 0.5px;
+}
+
+.win-close {
+  background: #e0dcd8;
+  border: 1px solid #999;
+  border-right-color: #555;
+  border-bottom-color: #555;
+  color: #333;
+  width: 16px;
+  height: 14px;
+  cursor: pointer;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.win-close:active {
+  border-color: #555;
+  border-right-color: #999;
+  border-bottom-color: #999;
+}
+
+#music-window {
+  width: 360px;
+  top: 220px;
+  left: 160px;
+}
+
+.music-body {
+  background: #f8f5f2;
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.music-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.vinyl-wrap {
+  flex-shrink: 0;
+  width: 110px;
+  height: 110px;
+  background: #ebe7e2;
+  border: 1px solid #ccc;
+  border-right-color: #888;
+  border-bottom-color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.vinyl {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #f0ece8 0 12%, transparent 12%),
+    repeating-radial-gradient(circle at 50% 50%, #1a1a1a 0, #1a1a1a 1px, #2a2828 2px, #1c1a1a 3px, #222 5px);
+  box-shadow: 0 2px 12px #0004, inset 0 0 6px #0003;
+  position: relative;
+}
+
+.vinyl.spinning {
+  animation: spin 2.4s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #f0ece8;
+  border: 1px solid #bbb;
+}
+
+.tonearm-wrap {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 36px;
+  height: 36px;
+}
+
+.tonearm {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 32px;
+  height: 5px;
+  background: #aaa;
+  border-radius: 3px;
+  transform-origin: right center;
+  transform: rotate(-38deg);
+  transition: transform 0.5s ease;
+}
+
+.tonearm.playing {
+  transform: rotate(-18deg);
+}
+
+.tonearm::before {
+  content: '';
+  position: absolute;
+  right: -1px;
+  top: -4px;
+  width: 10px;
+  height: 12px;
+  background: #bbb;
+  border-radius: 50%;
+}
+
+.music-meta {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding-top: 6px;
+}
+
+.music-song-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #222;
+  line-height: 1.3;
+}
+
+.music-artist-name {
+  font-size: 11px;
+  color: #888;
+  font-weight: 300;
+}
+
+/* progress */
+.music-progress {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.music-time {
+  font-size: 10px;
+  color: #999;
+  min-width: 32px;
+}
+
+.music-time.right {
+  text-align: right;
+}
+
+.music-bar-bg {
+  flex: 1;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.music-bar-fill {
+  height: 100%;
+  background: #888;
+  border-radius: 2px;
+  width: 0%;
+  pointer-events: none;
+  transition: width 0.2s linear;
+}
+
+.music-range {
+  position: absolute;
+  inset: -6px 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+}
+
+.music-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.mc-btn {
+  background: #ebe7e2;
+  border: 1px solid #bbb;
+  border-right-color: #777;
+  border-bottom-color: #777;
+  width: 26px;
+  height: 22px;
+  cursor: pointer;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  padding: 0;
+}
+
+.mc-btn:active {
+  border-color: #777;
+  border-right-color: #bbb;
+  border-bottom-color: #bbb;
+  transform: translate(1px, 1px);
+}
+
+.mc-btn.play {
+  width: 30px;
+}
+
+.music-playlist {
+  list-style: none;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-right-color: #888;
+  border-bottom-color: #888;
+  background: #fff;
+  max-height: 72px;
+  overflow-y: auto;
+  display: none;
+}
+
+.music-playlist.has-items {
+  display: block;
+}
+
+.music-playlist li {
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #444;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-playlist li:last-child {
+  border-bottom: none;
+}
+
+.music-playlist li:hover {
+  background: #f5f0eb;
+}
+
+.music-playlist li.active {
+  background: #e8e0d8;
+  font-weight: 500;
+}
+
+#mail-window {
+  width: 340px;
+  top: 60px;
+  left: 40px;
+}
+
+.mail-body {
+  background: #faf8f6;
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pixel-heart {
+  display: grid;
+  grid-template-columns: repeat(7, 8px);
+  grid-template-rows: repeat(5, 8px);
+  gap: 1px;
+  flex-shrink: 0;
+}
+
+.ph {
+  background: transparent;
+}
+
+.ph.r {
+  background: #e84060;
+}
+
+.ph.p {
+  background: #f080a0;
+}
+
+.mail-pw-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.taskbar-start {
+  background: transparent;
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.15);
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+  padding: 0 14px;
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  color: #444;
+  cursor: pointer;
+  height: 100%;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s;
+}
+
+.taskbar-start:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
+}
+
+.taskbar-start:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+
+
+.mail-pw-label {
+  font-size: 11px;
+  color: #555;
+  white-space: wrap;
+}
+
+.mail-pw-input {
+  flex: 1;
+  height: 20px;
+  width: 10px;
+  border: 1px solid #bbb;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  background: #fff;
+  padding: 0px;
+  font-size: 11px;
+  outline: none;
+  color: #333;
+}
+
+.mail-pw-btn {
+  background: #ebe7e2;
+  border: 1px solid #bbb;
+  border-right-color: #666;
+  border-bottom-color: #666;
+  padding: 2px 8px;
+  font-size: 10px;
+  cursor: pointer;
+  color: #333;
+  white-space: nowrap;
+}
+
+.mail-pw-btn:active {
+  border-color: #666;
+  border-right-color: #bbb;
+  border-bottom-color: #bbb;
+}
+
+.mail-letter {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeSlide 0.4s ease;
+}
+
+.mail-letter.visible {
+  display: flex;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mail-letter-paper {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-right-color: #aaa;
+  border-bottom-color: #aaa;
+  padding: 14px 16px;
+  min-height: 120px;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.8;
+  font-style: italic;
+  position: relative;
+}
+
+.mail-letter-paper::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #f0a0b040;
+}
+
+.mail-to,
+.mail-from-line {
+  font-size: 10px;
+  color: #aaa;
+  font-style: normal;
+  letter-spacing: 0.5px;
+}
+
+.mail-to {
+  margin-bottom: 6px;
+}
+
+.mail-from-line {
+  margin-top: 8px;
+  text-align: right;
+}
+
+.mail-letter-text {
+  color: #444;
+}
+
+.mail-close-letter {
+  align-self: flex-end;
+  background: #ebe7e2;
+  border: 1px solid #bbb;
+  border-right-color: #666;
+  border-bottom-color: #666;
+  padding: 2px 10px;
+  font-size: 10px;
+  cursor: pointer;
+  color: #555;
+}
+
+.mail-close-letter:active {
+  border-color: #666;
+  border-right-color: #bbb;
+  border-bottom-color: #bbb;
+}
+
+.float-hearts {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fheart {
+  position: absolute;
+  bottom: -20px;
+  opacity: 0;
+  animation: floatUp 2.5s ease-in forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0.9;
+    transform: translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-160px) scale(0.4);
+  }
+}
+
+@media (max-width: 600px) {
+
+  /* okna přes celou šířku, vycentrovaná */
+  .win-window {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    width: calc(100vw - 24px) !important;
+    max-width: 400px;
+  }
+
+  /* mail okno výše aby ho taskbar nepřekrýval */
+  #mail-window {
+    top: 60px !important;
+  }
+
+  #music-window {
+    top: 60px !important;
+  }
+
+  /* music player — vinyl nad meta */
+  .music-top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .music-meta {
+    width: 100%;
+    padding-top: 0;
+  }
+
+  /* ikony větší tap target */
+  .desktop-icon {
+    width: 72px;
+    font-size: 14px;
+  }
+
+  .desktop-icon img {
+    width: 72px;
+    height: 72px;
+  }
+
+  /* password row zalomení */
+  .mail-pw-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .mail-pw-input {
+    min-width: 0;
+    flex: 1 1 80px;
+  }
+
+  /* taskbar */
+  .taskbar-start {
+    padding: 0 10px;
+    font-size: 10px;
+  }
+
+  .taskbar-clock {
+    font-size: 11px;
+  }
+
+  /* header nav */
+  header nav a {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+  }
+}

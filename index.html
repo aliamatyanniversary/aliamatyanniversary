@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ali & maty<3</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+        <ul>
+            <li><a href="">Anniversary Delivery Service</a></li>
+            <li><a href="" id="timer"></a></li>
+        </ul>
+    </nav>
+    </header>
+    <main>
+      <a href="" class="desktop-icon" id="mail-icon">
+        <img src="img/mail.png" alt="mail">
+        <span>Mail</span>
+      </a>
+      <a href="" class="desktop-icon" id="music-icon">
+        <img src="img/music.png" alt="music">
+        <span>Music</span>
+      </a>
+    </main>
+
+<div class="win-window" id="mail-window" style="display:none;">
+  <div class="win-titlebar" id="mail-titlebar">
+    <button class="win-close" id="mail-close">×</button>
+    <span class="win-title">mail</span>
+    <div style="width:16px"></div>
+  </div>
+  <div class="mail-body" style="position:relative;">
+
+    <div id="mail-pw-screen">
+      <div class="mail-pw-row">
+        <div class="pixel-heart">
+          <div class="ph"></div><div class="ph r"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph r"></div><div class="ph"></div>
+          <div class="ph r"></div><div class="ph p"></div><div class="ph r"></div><div class="ph"></div><div class="ph r"></div><div class="ph p"></div><div class="ph r"></div>
+          <div class="ph r"></div><div class="ph p"></div><div class="ph p"></div><div class="ph r"></div><div class="ph p"></div><div class="ph p"></div><div class="ph r"></div>
+          <div class="ph"></div><div class="ph r"></div><div class="ph p"></div><div class="ph p"></div><div class="ph p"></div><div class="ph r"></div><div class="ph"></div>
+          <div class="ph"></div><div class="ph"></div><div class="ph r"></div><div class="ph p"></div><div class="ph r"></div><div class="ph"></div><div class="ph"></div>
+        </div>
+        <span class="mail-pw-label">Enter a password</span>
+        <input class="mail-pw-input" type="password" id="mail-pw-input" placeholder="">
+        <button class="mail-pw-btn" id="mail-pw-btn">OK</button>
+      </div>
+    </div>
+
+    <div class="mail-letter" id="mail-letter">
+      <div class="mail-letter-paper">
+        <div class="mail-to">pro: <em>Alisu Pilníkovou</em></div>
+        <div class="mail-letter-text">
+          <p>Krásný 1 month anniversary, Ali. Chtěl bych ti poděkovat za všechny prožité společné chvíle s tebou, děláš mě tím nejšťastnějším chlapečkem na světe. Opravdu pro mě znamenáš, a chci být s tebou už jen do konce života. Už se těším na naše další výročí. :) Love you xx</p>
+        </div>
+        <div class="mail-from-line">od: <em>Matýska</em></div>
+      </div>
+      <button class="mail-close-letter" id="mail-close-letter">zavřít ×</button>
+    </div>
+
+    <div class="float-hearts" id="float-hearts"></div>
+  </div>
+</div>
+
+<div class="win-window" id="music-window" style="display:none;">
+  <div class="win-titlebar" id="music-titlebar">
+    <button class="win-close" id="music-close">×</button>
+    <span class="win-title">music</span>
+    <div style="width:16px"></div>
+  </div>
+  <div class="music-body">
+    <iframe id="sc-iframe" width="100%" height="0" scrolling="no" frameborder="no" allow="autoplay" src="" style="display:none;"></iframe>
+
+    <div class="music-top">
+      <!-- vinyl -->
+      <div class="vinyl-wrap">
+        <div class="vinyl" id="record">
+          <div class="vinyl-center"></div>
+        </div>
+        <div class="tonearm-wrap">
+          <div class="tonearm" id="tonearm"></div>
+        </div>
+      </div>
+
+      <div class="music-meta">
+        <div class="music-song-name" id="song-title">—</div>
+        <div class="music-artist-name" id="artist-title">klikni play</div>
+
+        <div class="music-progress" style="margin-top:10px;">
+          <span class="music-time" id="time-current">0:00</span>
+          <div class="music-bar-bg">
+            <div class="music-bar-fill" id="progress-fill"></div>
+            <input type="range" class="music-range" id="progress-range" value="0" min="0" max="100" step="0.1">
+          </div>
+          <span class="music-time right" id="time-total">0:00</span>
+        </div>
+
+        <div class="music-controls" style="margin-top:6px;">
+          <button class="mc-btn" id="btn-play">▶</button>
+          <button class="mc-btn" id="btn-next">▶|</button>
+        </div>
+      </div>
+    </div>
+
+    <ul class="music-playlist" id="playlist"></ul>
+  </div>
+</div>
+
+<footer>
+  <div class="taskbar">
+        <button class="taskbar-start">Start</button>
+
+    <div class="taskbar-divider"></div>
+    <div class="taskbar-clock" id="taskbar-clock">00:00</div>
+  </div>
+</footer>
+
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script src="js/time.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/mail.js"></script>
+</body>
+</html>
