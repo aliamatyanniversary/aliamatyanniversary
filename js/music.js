@@ -18,6 +18,7 @@ const songs = [
   { name: 'House Tour', artist: 'Sabrina Carpenter', url: 'https://raw.githubusercontent.com/aliamatyanniversary/fav-music/master/Sabrina%20Carpenter%20-%20House%20Tour%20(Lyrics).mp3' },
   { name: 'Tears', artist: 'Sabrina Carpenter', url: 'https://raw.githubusercontent.com/aliamatyanniversary/fav-music/master/Sabrina%20Carpenter%20-%20Tears%20(Lyrics).mp3' },
   { name: 'The Last Two People on Earth', artist: 'Melanie Martinez', url: 'https://raw.githubusercontent.com/aliamatyanniversary/fav-music/master/THE%20LAST%20TWO%20PEOPLE%20ON%20EARTH%20%20Melanie%20Martinez%20lyrics%20(Read%20description).mp3' },
+  {name: "Ultraviolence", artist: 'Lana Del Rey', url: 'https://raw.githubusercontent.com/aliamatyanniversary/fav-music/master/Lana%20Del%20Rey%20-%20Ultraviolence%20(Audio).mp3'},
 ];
 
 let audio = new Audio();
