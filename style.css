@@ -94,6 +94,10 @@ main {
   font-size: 12px;
 }
 
+.desktop-icon span{
+  color: rgb(255, 255, 255);
+}
+
 .desktop-icon img {
   width: 86px;
   height: 86px;
@@ -467,7 +471,7 @@ footer {
   gap: 10px;
 }
 
-.taskbar-start {
+.taskbar-button {
   background: transparent;
   border: none;
   border-left: 1px solid rgba(0, 0, 0, 0.15);
@@ -484,12 +488,12 @@ footer {
   transition: background 0.15s, color 0.15s;
 }
 
-.taskbar-start:hover {
+.taskbar-button:hover {
   background: rgba(0, 0, 0, 0.06);
   color: #111;
 }
 
-.taskbar-start:active {
+.taskbar-button:active {
   background: rgba(0, 0, 0, 0.1);
 }
 
@@ -802,7 +806,7 @@ footer {
     flex: 1 1 80px;
   }
 
-  .taskbar-start {
+  .taskbar-button {
     padding: 0 10px;
     font-size: 10px;
   }
