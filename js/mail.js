@@ -38,6 +38,16 @@ const mails = [
     hearts: false,
     sun: true,
   },
+    {
+    from: 'Matýsek',
+    subject: 'YUM note',
+    snippet: 'Čauky mňauky po sprše...',
+    password: 'wednesdat',
+    body: `Čauky mňauky po sprše :3 Tenhle týden jsme oba dva zvádli, sice to bylo neskutečně dlouhé a náročné bez tebe, ale v pondělí se vidíme :) Moc se na tebe těším a myslím na tebe každičkou sekundu. kisskiss`,
+    date: '30. 5',
+    hearts: true,
+    sun: true,
+  },
 ];
 
 const readSet = new Set();
