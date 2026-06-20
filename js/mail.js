@@ -50,7 +50,7 @@ const mails = [
   },
     {
     from: 'Matýsek',
-    subject: 'Love letter',
+    subject: 'Last school letter',
     snippet: 'Náš poslední den...',
     password: 'wednesdat',
     body: `Náš poslední den spolu bude nejhezčí a nejkrásnější, jsem si tím dost jistý. To léto nějak dáme, máme toho hoodně připraveného a já mám pro tebe dva dárky naplánové :) Snad se budou líbit! Missuju tě už teďka. Love you.`,
