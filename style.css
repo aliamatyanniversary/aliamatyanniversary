@@ -94,7 +94,7 @@ main {
   font-size: 12px;
 }
 
-.desktop-icon span{
+.desktop-icon span {
   color: rgb(255, 255, 255);
 }
 
@@ -543,6 +543,7 @@ footer {
   gap: 8px;
   animation: fadeSlide 0.4s ease;
 }
+
 .mail-letter.visible {
   display: flex;
 }
@@ -688,16 +689,25 @@ footer {
   transition: background 0.15s;
 }
 
-.mail-inbox-row:hover { background: #ffe0e8; }
+.mail-inbox-row:hover {
+  background: #ffe0e8;
+}
 
 .mail-inbox-row.read {
   background: #fff;
   border-left-color: transparent;
 }
 
-.mail-inbox-icon { font-size: 13px; padding-top: 1px; flex-shrink: 0; }
+.mail-inbox-icon {
+  font-size: 13px;
+  padding-top: 1px;
+  flex-shrink: 0;
+}
 
-.mail-inbox-preview { flex: 1; min-width: 0; }
+.mail-inbox-preview {
+  flex: 1;
+  min-width: 0;
+}
 
 .mail-inbox-sender {
   font-size: 11px;
@@ -705,7 +715,10 @@ footer {
   color: #222;
 }
 
-.mail-inbox-row.read .mail-inbox-sender { font-weight: 400; color: #555; }
+.mail-inbox-row.read .mail-inbox-sender {
+  font-weight: 400;
+  color: #555;
+}
 
 .mail-inbox-subject {
   font-size: 11px;
@@ -723,7 +736,12 @@ footer {
   text-overflow: ellipsis;
 }
 
-.mail-inbox-date { font-size: 9px; color: #bbb; white-space: nowrap; padding-top: 1px; }
+.mail-inbox-date {
+  font-size: 9px;
+  color: #bbb;
+  white-space: nowrap;
+  padding-top: 1px;
+}
 
 .mail-detail-subject {
   font-size: 11px;
@@ -741,7 +759,105 @@ footer {
   padding: 12px;
 }
 
+#recycle-window {
+  width: 280px;
+  top: 140px;
+  left: 220px;
+}
 
+.recycle-body {
+  background: #faf8f6;
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.recycle-empty-icon {
+  font-size: 32px;
+  line-height: 1;
+  filter: grayscale(0.3);
+}
+
+.recycle-empty-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+  margin-top: 4px;
+}
+
+.recycle-empty-text {
+  font-size: 11px;
+  color: #999;
+  line-height: 1.6;
+  max-width: 200px;
+}
+
+#egg-icon.egg-shake {
+  animation: eggShake 0.35s ease;
+}
+
+#egg-icon.egg-shake {
+  animation: eggShake 0.35s ease;
+}
+
+
+#egg-window {
+  width: 300px;
+  top: 180px;
+  left: 280px;
+}
+
+.egg-body {
+  background: #faf8f6;
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  min-height: 140px;
+}
+
+.egg-message {
+  font-size: 13px;
+  font-style: italic;
+  color: #444;
+  line-height: 1.8;
+  max-width: 230px;
+  z-index: 2;
+}
+
+.egg-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.egg-confetti span {
+  position: absolute;
+  top: -10px;
+  font-size: 14px;
+  opacity: 0;
+  animation: eggFall 1.8s ease-in forwards;
+}
+
+@keyframes eggFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(160px) rotate(360deg);
+  }
+}
 
 @keyframes floatUp {
   0% {
@@ -820,5 +936,9 @@ footer {
     letter-spacing: 1px;
     padding: 4px 8px;
   }
-}
 
+  #recycle-window,
+  #egg-window {
+    top: 60px !important;
+  }
+}
