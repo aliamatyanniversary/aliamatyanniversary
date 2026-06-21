@@ -58,6 +58,16 @@ const mails = [
     hearts: true,
     sun: true,
   },
+    {
+    from: 'Matýsek',
+    subject: 'Krásný 2 month anniversary',
+    snippet: 'Krásný 2 month anniversary...',
+    password: 'wednesdat',
+    body: `Krásný 2 month anniversary Ali, je to už strašně dlouho a zároveň strašně krátko, co tě znám, ale za tyhle dva měsíce jsem již přesvědčený, že s tebou chci být fakt dlouho, actually víc než dlouho. Chtěl bych ti ještě jednou poděkovat za ten minulý týden, moc jsem si ho užil a doufám že ty taky. Taky ti chci připomenout, že jsi vše skvěle zvládla a zvládáš, školu, budoucnost, náš vztah,koníčky... a já jsem na tebe moc pyšný<3 Už se moc těším na naše půl roční výroční :) Love you yy`,
+    date: '22. 6',
+    hearts: true,
+    sun: true,
+  },
 ];
 
 const readSet = new Set();
