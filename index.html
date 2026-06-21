@@ -24,6 +24,14 @@
         <img src="img/music.png" alt="music">
         <span>Music</span>
       </a>
+      <a href="" class="desktop-icon" id="recycle-icon">
+        <img src="img/recycle.png" alt="recycle bin">
+        <span>Bad Days</span>
+      </a>
+      <a href="" class="desktop-icon" id="egg-icon">
+        <img src="img/egg.png" alt="???">
+        <span>???</span>
+      </a>      
     </main>
 
 <div class="win-window" id="mail-window" style="display:none;">
@@ -113,6 +121,33 @@
   </div>
 </div>
 
+<div class="win-window" id="recycle-window" style="display:none;">
+  <div class="win-titlebar" id="recycle-titlebar">
+    <button class="win-close" id="recycle-close">×</button>
+    <span class="win-title">bad days</span>
+    <div style="width:16px"></div>
+  </div>
+  <div class="recycle-body">
+    <div class="recycle-empty-icon">&#128465;</div>
+    <div class="recycle-empty-title">Recycle Bin is empty</div>
+    <div class="recycle-empty-text">
+      nothing to delete here, every day with you has been a good one. 2 months down, infinite to go. &#128155;
+    </div>
+  </div>
+</div>
+ 
+<div class="win-window" id="egg-window" style="display:none;">
+  <div class="win-titlebar" id="egg-titlebar">
+    <button class="win-close" id="egg-close">×</button>
+    <span class="win-title">found you</span>
+    <div style="width:16px"></div>
+  </div>
+  <div class="egg-body">
+    <div class="egg-confetti" id="egg-confetti"></div>
+    <div class="egg-message" id="egg-message"></div>
+  </div>
+</div>
+
 <footer>
   <div class="taskbar">
     <button class="taskbar-button">Clit on me &#128069;</button>
@@ -125,5 +160,6 @@
     <script src="js/music.js"></script>
     <script src="js/mail.js"></script>
     <script src="js/wallpaper.js"></script>
+    <script src="js/easter.js"></script>
 </body>
 </html>
