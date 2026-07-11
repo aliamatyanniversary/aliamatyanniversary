@@ -48,9 +48,9 @@ const mails = [
     hearts: true,
     sun: true,
   },
-    {
+  {
     from: 'Matýsek',
-    subject: 'Last school letter',
+    subject: 'Love letter',
     snippet: 'Náš poslední den...',
     password: 'wednesdat',
     body: `Náš poslední den spolu bude nejhezčí a nejkrásnější, jsem si tím dost jistý. To léto nějak dáme, máme toho hoodně připraveného a já mám pro tebe dva dárky naplánové :) Snad se budou líbit! Missuju tě už teďka. Love you.`,
@@ -58,7 +58,7 @@ const mails = [
     hearts: true,
     sun: true,
   },
-    {
+  {
     from: 'Matýsek',
     subject: 'Krásný 2 month anniversary',
     snippet: 'Krásný 2 month anniversary...',
@@ -68,6 +68,17 @@ const mails = [
     hearts: true,
     sun: true,
   },
+{
+    from: 'Freaky Maty',
+    subject: 'pre-birth note',
+    snippet: '',
+    password: 'wednesdat',
+    body: `Nemusíš se vůbec stresovat kvůli tomu že ti bude 18, právě naopak, už bude vše lepší, nebudeš muset chodit za rodiči, nebudeš potřebovat povolení, nic. Budeš free a... dospělá. Může to feelovat strašně tězce, protože budeš muset řešit hodně věcí naráz, ale i přes to věřím, že to zvládneš. Kdyby něco bylo prostě hodně, tak tu pořád máš mě a tvé rodiče, budeme při tobě navždy a pořád. Doufám že ti bude celkově i lépe. Moc tě miluju<3 yy`,
+    date: '10. 7',
+    hearts: true,
+    sun: true,
+  }
+  
 ];
 
 const readSet = new Set();
