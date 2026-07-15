@@ -22,7 +22,7 @@ window.pragueLocations = [
     iconType: "heart",
     title: "Riegrovy Sady",
     desc: "Náš spot kde jsme si poprvé spolu vybrali matching wallpapers, já papal tvůj koláč, hráli karty, měli deep throaths a tady jsem pochopil že máme stejné hodnoty.",
-    img: "img/polaroid_sunset.jpg"
+    img: "img/reigerovy.jpg"
   },
   {
     coords: [50.08993636705294, 14.426566478787027],
@@ -94,7 +94,6 @@ window.pragueLocations = [
     desc: "Tady jsme byli tolikrát že nevím co tu napsat:D Byli jsme tady když tvoji rodiče byli někde v baru, to jsme tady byli po tom kině, a ty jsi nakonec měla crashout z tvé třídy a celkově kvůli lidem. Potom jsme tady byli po tom golfu, taky náš nejlepší go-to spot pro kafé<3 Já jsem tady dal hodně lockin na HTB a ty jsi se učila a potom jsme si dali i něco yummy na papu. HM: Mají tu super a cool záchody!!!",
     img: "img/flatcafe.jpg"
   }
-
   
 ];
 
