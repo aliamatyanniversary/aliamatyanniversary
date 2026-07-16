@@ -1,239 +1,3689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ali & maty<3</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alisa's Adulthood Portal 💖</title>
+  
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Special+Elite&display=swap" rel="stylesheet">
+  
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/map.js"></script>
+
+  <style>
     
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    :root {
+      
+      --primary: #8b1e2f;
+      --secondary: #dfa727;
+      --accent: #5a111a;
+      --bg: #110e10;
+      --card-bg: #f4edd8; 
+      --border-color: #5a3825;
+      --border: 2px solid var(--border-color);
+      --text: #2c1609;
+      --text-muted: #6d543e;
+      --font-header: 'Playfair Display', serif;
+      --font-text: 'Outfit', sans-serif;
+      --font-cursive: 'Special Elite', monospace;
+      --font-garamond: 'Cormorant Garamond', serif;
+      --header-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      --map-filter: sepia(0.65) hue-rotate(330deg) brightness(0.9) contrast(1.1) saturate(0.9);
+      --floating-color: rgba(223, 167, 39, 0.3);
+    }
+
+    body.theme-journal1 {
+      
+      --primary: #1e5a3c;
+      --secondary: #dfa727;
+      --accent: #0f3d24;
+      --card-bg: #ebdcb9;
+      --text: #172d1f;
+      --text-muted: #4e6153;
+      --map-filter: sepia(0.5) hue-rotate(80deg) brightness(0.9) contrast(1.05);
+    }
+
+    body.theme-journal2 {
+      
+      --primary: #22577a;
+      --secondary: #80ed99;
+      --accent: #1f3a52;
+      --card-bg: #e6edd8;
+      --text: #132230;
+      --text-muted: #4a5c68;
+      --map-filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.2);
+    }
+
+    body.theme-journal3 {
+      
+      --primary: #8b1e2f;
+      --secondary: #dfa727;
+      --accent: #5a111a;
+      --card-bg: #f4edd8;
+      --text: #2c1609;
+      --text-muted: #6d543e;
+      --map-filter: sepia(0.65) hue-rotate(330deg) brightness(0.9) contrast(1.1) saturate(0.9);
+    }
+
+    body.theme-journal18 {
+      
+      --primary: #9a6d38;
+      --secondary: #e5c158;
+      --accent: #5e411b;
+      --card-bg: #faf3e0;
+      --text: #2d1f10;
+      --text-muted: #6b563f;
+      --map-filter: sepia(0.4) hue-rotate(350deg) brightness(0.95) contrast(1.1);
+    }
+
+    
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image: url("https://wallpapercat.com/w/full/0/d/5/46753-3840x2160-desktop-4k-gravity-falls-background.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center;
+      color: var(--text);
+      font-family: var(--font-text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 40px;
+      transition: background-color 0.5s, color 0.5s;
+      position: relative;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.4) 100%);
+    }
+
+    
+    .char-decor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 5;
+      filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
+      display: none;
+    }
+    
+    @media (min-width: 950px) {
+      .char-decor { display: block; }
+    }
+
+    #char-dipper {
+      bottom: 10px;
+      left: 10px;
+      width: 120px;
+    }
+
+    #char-mabel {
+      bottom: 10px;
+      right: 10px;
+      width: 125px;
+    }
+
+    #char-bill {
+      top: 40px;
+      right: 20px;
+      width: 120px;
+      animation: billHover 5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 15px rgba(223, 167, 39, 0.65));
+    }
+
+    @keyframes billHover {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-16px) rotate(4deg); }
+    }
+
+    
+    h1, h2, h3, .shop-card-name {
+      font-family: var(--font-cursive);
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2px;
+      color: #dfa727;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(223, 167, 39, 0.4);
+      letter-spacing: 1px;
+      text-align: center;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: #ebdcb9;
+      font-family: var(--font-garamond);
+      font-style: italic;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    }
+
+    
+    header {
+      width: 100%;
+      max-width: 800px;
+      text-align: center;
+      padding: 20px 20px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .theme-switcher-box {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #ebdcb9;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .theme-select {
+      background: #5a3825;
+      color: #ebdcb9;
+      border: 1px solid #dfa727;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-family: var(--font-cursive);
+      font-size: 0.8rem;
+      outline: none;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    
+    .countdown-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 10px 0 2px;
+      flex-wrap: wrap;
+    }
+
+    .flip-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .flip-card {
+      background: linear-gradient(180deg, #50121c 0%, #8b1e2f 100%);
+      color: #dfa727;
+      border: 2px solid #dfa727;
+      font-family: var(--font-cursive);
+      font-size: 1.6rem;
+      font-weight: 700;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6), inset 0 2px 4px rgba(255,255,255,0.1);
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .flip-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #ebdcb9;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: calc(100% - 40px);
+      max-width: 680px;
+      background: rgba(90, 56, 37, 0.95);
+      border: 2px solid #dfa727;
+      border-radius: 12px;
+      padding: 10px 24px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      box-shadow: var(--card-shadow);
+      color: #ebdcb9;
+      z-index: 10;
+    }
+
+    .coin-display {
+      font-weight: bold;
+      color: #dfa727;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 14px;
+      border-radius: 8px;
+      border: 1px solid #dfa727;
+      font-family: var(--font-cursive);
+    }
+
+    .back-btn {
+      color: #dfa727;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: var(--font-cursive);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s;
+    }
+    .back-btn:hover {
+      color: #fff;
+      transform: translateX(-2px);
+    }
+
+    
+    .tabs {
+      display: flex;
+      background: transparent;
+      padding: 0;
+      margin: 10px 0 0;
+      gap: 4px;
+      width: calc(100% - 40px);
+      max-width: 680px;
+      z-index: 10;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: var(--border);
+      border-bottom: none;
+      background: rgba(90, 56, 37, 0.8);
+      color: #ebdcb9;
+      padding: 12px 10px;
+      font-size: 0.85rem;
+      font-family: var(--font-cursive);
+      border-radius: 10px 10px 0 0;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      position: relative;
+      top: 2px;
+    }
+
+    .tab-btn:hover {
+      color: #fff;
+      background: rgba(90, 56, 37, 0.95);
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      border-bottom: 2px solid var(--card-bg);
+      top: 0;
+      z-index: 2;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+    }
+
+    
+    .view-container {
+      width: calc(100% - 40px);
+      max-width: 680px;
+      min-height: 480px;
+      background: var(--card-bg);
+      border: var(--border);
+      border-radius: 0 0 20px 20px;
+      padding: 28px;
+      box-shadow: var(--card-shadow);
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .view-container.active { display: block; }
+    #view-shop.view-container {
+      max-width: 920px;
+      padding: 20px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    
+    .places-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      height: 100%;
+    }
+
+    .map-container-box {
+      width: 100%;
+      height: 320px;
+      border-radius: 12px;
+      border: var(--border);
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    #places-map {
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .leaflet-tile-container {
+      filter: var(--map-filter);
+      transition: filter 0.5s;
+    }
+
+    .custom-map-pin {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .heart-pin-wrapper {
+      background: var(--card-bg);
+      border: 2px solid var(--accent);
+      width: 32px;
+      height: 32px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+      animation: pinBounce 1.5s infinite alternate;
+    }
+    .heart-pin-icon {
+      transform: rotate(45deg);
+      font-size: 1.1rem;
+      line-height: 1;
+    }
+
+    @keyframes pinBounce {
+      0% { transform: rotate(-45deg) translateY(0); }
+      100% { transform: rotate(-45deg) translateY(-4px); }
+    }
+
+    .home-pin.my-home .heart-pin-wrapper { border-color: #3b82f6; }
+    .home-pin.her-home .heart-pin-wrapper { border-color: #ec4899; }
+
+    .leaflet-polaroid-popup .leaflet-popup-content-wrapper {
+      background: #faf6f0;
+      border-radius: 12px;
+      padding: 10px;
+      border: 2px solid #5a3825;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+    .leaflet-polaroid-popup .leaflet-popup-tip {
+      background: #faf6f0;
+    }
+    .map-polaroid {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: var(--font-cursive);
+      transform: rotate(-1.5deg);
+    }
+    .map-polaroid.no-img {
+      transform: none;
+    }
+    .polaroid-img-frame {
+      width: 100%;
+      aspect-ratio: 1.1;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.06);
+      background: #eee;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+    .polaroid-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .polaroid-caption {
+      text-align: center;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: #332211;
+    }
+    .polaroid-caption h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+      color: var(--primary);
+    }
+
+    .memories-list-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .memory-list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: rgba(90, 56, 37, 0.05);
+      border: 1.5px dashed var(--border-color);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .memory-list-item:hover, .memory-list-item.active {
+      background: rgba(90, 56, 37, 0.15);
+      border-style: solid;
+      border-color: var(--primary);
+      transform: translateX(4px);
+    }
+    .memory-list-num {
+      font-weight: bold;
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-family: var(--font-cursive);
+    }
+    .memory-list-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      flex: 1;
+    }
+    .memory-list-arrow {
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    
+    .mcgucket-container {
+      background: #050d06;
+      border: 4px solid #332211;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 25px rgba(0, 255, 0, 0.2);
+      padding: 20px;
+      color: #39ff14;
+      font-family: 'Courier New', Courier, monospace;
+      position: relative;
+      overflow: hidden;
+      font-size: 0.9rem;
+    }
+
+    
+    .mcgucket-container::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 10;
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+
+    .mcgucket-header {
+      border-bottom: 2px solid #39ff14;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      text-align: center;
+      font-weight: bold;
+      letter-spacing: 2px;
+      animation: flicker 0.15s infinite;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.98; }
+      50% { opacity: 1; }
+      100% { opacity: 0.99; }
+    }
+
+    .mcgucket-section {
+      background: rgba(0, 255, 0, 0.03);
+      border: 1px solid rgba(57, 255, 20, 0.4);
+      border-radius: 6px;
+      padding: 14px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .mcgucket-sec-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .terminal-output {
+      background: #020703;
+      padding: 10px;
+      border: 1px dashed rgba(57, 255, 20, 0.3);
+      border-radius: 4px;
+      color: #39ff14;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      margin-top: 6px;
+      word-break: break-all;
+    }
+
+    .terminal-input-box {
+      background: #020703;
+      border: 1px solid #39ff14;
+      color: #39ff14;
+      padding: 6px 10px;
+      width: 100%;
+      font-family: 'Courier New', Courier, monospace;
+      outline: none;
+      border-radius: 4px;
+    }
+
+    .terminal-btn {
+      background: transparent;
+      border: 1px solid #39ff14;
+      color: #39ff14;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-family: 'Courier New', Courier, monospace;
+      transition: all 0.2s;
+      border-radius: 4px;
+    }
+    .terminal-btn:hover {
+      background: rgba(57, 255, 20, 0.15);
+      box-shadow: 0 0 8px rgba(57,255,20,0.5);
+    }
+
+    .blink-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: #39ff14;
+      animation: cursorBlink 0.8s infinite;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    @keyframes cursorBlink {
+      50% { opacity: 0; }
+    }
+
+    
+    .shack-shop {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .shack-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: #5a3825;
+      padding: 14px;
+      border-radius: 8px;
+      border: 1px solid #dfa727;
+      color: #ebdcb9;
+      position: relative;
+    }
+
+    .shack-header-title {
+      font-family: var(--font-cursive);
+      font-size: 1.5rem;
+      color: #dfa727;
+      text-shadow: 1px 1px 2px #000;
+    }
+
+    .anniversary-group {
+      border: var(--border);
+      border-radius: 12px;
+      background: rgba(90, 56, 37, 0.04);
+      padding: 16px;
+    }
+
+    .anniversary-title {
+      font-family: var(--font-cursive);
+      font-size: 1.25rem;
+      color: var(--accent);
+      border-bottom: 2px dashed var(--border-color);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .vouchers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .voucher-card {
+      background: var(--card-bg);
+      border: var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: transform 0.25s;
+    }
+    .voucher-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .voucher-badge {
+      background: var(--primary);
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 4px;
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .canvas-container-box {
+      position: relative;
+      width: 240px;
+      height: 120px;
+      border: var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .scratch-under-layer {
+      position: absolute;
+      inset: 0;
+      background: #faf6f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      text-align: center;
+      transform: rotate(0.5deg);
+    }
+
+    .claimed-list {
+      margin-top: 10px;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 14px;
+    }
+    #claimed-vouchers-container {
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .claimed-item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(90,56,37,0.06);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+    }
+
+    
+    .letter-paper {
+      background: linear-gradient(180deg, #fbf7ec 0%, #f4ebd3 100%);
+      border: 2px solid #5a3825;
+      border-radius: 8px;
+      padding: 36px 32px;
+      min-height: 320px;
+      position: relative;
+      box-shadow: inset 0 0 20px rgba(90, 56, 37, 0.1), 0 5px 20px rgba(0,0,0,0.15);
+      font-family: var(--font-garamond);
+      font-size: 1.15rem;
+      line-height: 2.1;
+      color: #3b2314;
+      white-space: pre-wrap;
+      background-image: repeating-linear-gradient(
+        transparent, transparent 31px, rgba(90, 56, 37, 0.05) 31px, rgba(90, 56, 37, 0.05) 32px
+      );
+    }
+
+    .letter-paper::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-image: url(img/bill.png);
+      background-size: contain;
+      background-repeat: no-repeat;
+      width: 45px;
+      height: 45px;
+      opacity: 0.15;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--accent);
+      animation: blink 0.7s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .letter-replay-btn { display: block; margin: 18px auto 0; font-size: 0.85rem; font-family: var(--font-cursive); }
+
+    
+    .balloon-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .b-item {
+      position: absolute;
+      bottom: -80px;
+      opacity: 0.5;
+      font-size: 2rem;
+      animation: floatUp 7.5s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.65; }
+      100% { transform: translateY(-110vh) rotate(45deg) scale(1.2); opacity: 0; }
+    }
+
+    
+    .btn-action {
+      background: linear-gradient(180deg, var(--primary), var(--accent));
+      color: #fff;
+      border: 1px solid var(--border-color);
+      padding: 11px 26px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      font-family: var(--font-cursive);
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 2px 4px rgba(255,255,255,0.15);
+      transition: all 0.25s;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    }
+
+    .btn-action:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    
+    .btn-action.btn-secondary {
+      background: var(--card-bg);
+      color: var(--accent);
+      border: 1px solid var(--primary);
+      box-shadow: none;
+    }
+    .btn-action.btn-secondary:hover {
+      background: rgba(90, 56, 37, 0.1);
+    }
+
+    .confetti-piece {
+      position: fixed;
+      z-index: 9997;
+      pointer-events: none;
+      font-size: 18px;
+      animation: confettiFall 3s ease-out forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg) scale(1.2); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg) scale(0.3); opacity: 0; }
+    }
+
+    
+    @media (max-width: 580px) {
+      h1 { font-size: 2.2rem; }
+      .tabs { width: 100%; flex-wrap: wrap; gap: 2px; }
+      .tab-btn { font-size: 0.8rem; padding: 10px 4px; border-radius: 8px 8px 0 0; }
+      .view-container { border-radius: 0 0 16px 16px; padding: 16px; min-height: 400px; }
+      .flip-card { width: 44px; height: 48px; font-size: 1.4rem; }
+      .countdown-bar { gap: 10px; }
+      .map-container-box { height: 240px; }
+    }
+
+    
+    
+    .shack-shop {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 24px;
+      background: #ebdcb9; 
+      border: 6px solid #4a2c11; 
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: inset 0 0 25px rgba(90, 56, 37, 0.2), var(--card-shadow);
+      position: relative;
+    }
+    @media (max-width: 768px) {
+      .shack-shop {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .ledger-page-left {
+      background: #faf6eb;
+      border: 1px solid #d3c7a8;
+      border-radius: 6px;
+      padding: 16px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.05);
+      background-image: repeating-linear-gradient(
+        transparent, transparent 27px, rgba(90, 56, 37, 0.04) 27px, rgba(90, 56, 37, 0.04) 28px
+      );
+      min-height: 400px;
+    }
+
+    .shack-shop-shelves {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 10px;
+    }
+
+    .ledger-item-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-family: var(--font-cursive);
+      font-size: 0.82rem;
+      color: #3b2314;
+      min-height: 38px;
+    }
+    
+    .ledger-item-title {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .ledger-item-dots {
+      flex: 1;
+      border-bottom: 2px dotted rgba(90, 56, 37, 0.45);
+      margin: 0 8px;
+      margin-bottom: 4px;
+      min-width: 10px;
+    }
+
+    .ledger-item-price {
+      font-weight: bold;
+      color: var(--primary);
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+
+    .ledger-buy-btn {
+      background: linear-gradient(180deg, #dfa727, #b88612);
+      color: #2c1609;
+      border: 1px solid #7c5813;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-family: var(--font-cursive);
+      font-size: 0.72rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      transition: background 0.15s;
+    }
+    .ledger-buy-btn:hover {
+      background: linear-gradient(180deg, #ffd366, #dfa727);
+    }
+    .ledger-buy-btn:disabled {
+      background: #ccc !important;
+      color: #777 !important;
+      border-color: #aaa !important;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .purchased-crossed {
+      text-decoration: line-through red 2px;
+      opacity: 0.65;
+    }
+
+    .ledger-page-right {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .stan-counter-container {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: #fdfaf2;
+      border: 2px solid #5a3825;
+      border-radius: 10px;
+      padding: 10px 14px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    }
+    .stan-speech-bubble {
+      flex: 1;
+      background: #ffffff;
+      border: 2px solid #5a3825;
+      border-radius: 10px;
+      padding: 8px 12px;
+      position: relative;
+      font-family: var(--font-cursive);
+      font-size: 0.8rem;
+      color: #3c1e0e;
+    }
+    .stan-speech-bubble::before {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: #ffffff;
+      border-right: 2px solid #5a3825;
+      border-top: 2px solid #5a3825;
+    }
+    .stan-avatar-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: 2px solid #5a3825;
+      overflow: hidden;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+    .stan-avatar-wrap img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .unwrapped-shelf-title {
+      font-family: var(--font-cursive);
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin: 8px 0 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .unwrapped-shelf {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: #4a2c11;
+      border: 2px solid #3c1e0e;
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 80px;
+      box-shadow: inset 0 3px 6px rgba(0,0,0,0.4);
+    }
+
+    
+    .journal-cover-display.has-img {
+      padding: 0;
+      border: 3px solid #3c2014;
+      background: #000;
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.6);
+    }
+    .journal-cover-display.has-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.32); 
+      transition: transform 0.3s;
+      border-radius: 0;
+    }
+
+    .balloon-floater {
+      position: fixed;
+      bottom: -60px;
+      pointer-events: none;
+      z-index: 1000;
+      animation: floatUp linear infinite;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.85;
+      }
+      90% {
+        opacity: 0.85;
+      }
+      100% {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    
+    .arcade-terminal {
+      background: #1c1d1b;
+      border: 4px solid #3c2415;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 14px;
+      box-shadow: inset 0 0 10px #000, 0 6px 16px rgba(0,0,0,0.4);
+      font-family: 'Courier New', monospace;
+      color: #39ff14;
+      text-shadow: 0 0 3px #39ff14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 344px;
+      box-sizing: border-box;
+    }
+    .arcade-screen {
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 320 / 280;
+      background: #080c08;
+      border: 3px solid #1a221a;
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.9);
+    }
+    .arcade-screen::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      z-index: 99;
+      background-size: 100% 3px, 3px 100%;
+      pointer-events: none;
+    }
+    .arcade-screen canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .arcade-hud {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 4px 8px;
+      background: #101510;
+      border-bottom: 2px solid #080c08;
+      color: #39ff14;
+    }
+    .game-play-btn {
+      background: #39ff14;
+      color: #080c08;
+      border: none;
+      padding: 6px 16px;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+      text-shadow: none;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+      font-size: 0.85rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .game-play-btn:hover {
+      background: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 0 10px #39ff14;
+    }
+    .game-control-btn {
+      background: #2a2a2a;
+      color: #fff;
+      border: 2px solid #000;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      transition: background 0.1s;
+    }
+    .game-control-btn:active {
+      background: #444;
+    }
+    
+    .prague-card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 10px;
+      height: calc(100% - 28px);
+      box-sizing: border-box;
+    }
+    .prague-card {
+      background: #3c2415;
+      border: 2px solid #dfa727;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease-out, box-shadow 0.2s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+    }
+    .prague-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #dfa727;
+    }
+    .prague-card.flipped {
+      transform: rotateY(180deg);
+      border-color: #39ff14;
+      background: #0c120c;
+    }
+    .prague-card-inner {
+      pointer-events: none;
+    }
+
+    
+    .journal-book-layout {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .journal-book {
+      display: flex;
+      background: #f4edd8;
+      border: 6px solid #4a1525;
+      border-radius: 12px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.25);
+      min-height: 480px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.5s;
+    }
+    .theme-journal1 .journal-book { border-color: #0f3d24; }
+    .theme-journal2 .journal-book { border-color: #1f3a52; }
+    .theme-journal3 .journal-book { border-color: #5a111a; }
+    
+    .journal-book::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 10px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
+      z-index: 10;
+    }
+    .journal-page {
+      flex: 1;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-y: auto;
+      max-height: 520px;
+      box-shadow: inset 0 0 15px rgba(90, 56, 37, 0.05);
+      background-image: radial-gradient(circle at center, rgba(255,255,255,0.4) 0%, transparent 100%);
+    }
+    .left-page {
+      border-right: 1px solid rgba(90, 56, 37, 0.15);
+      background-color: #fcf8ee;
+    }
+    .right-page {
+      border-left: 1px solid rgba(90, 56, 37, 0.15);
+      background-color: #faf4e5;
+    }
+    .journal-cover-display {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #7c2230;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 3px solid #5a111a;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background-color 0.5s, border-color 0.5s;
+    }
+    .theme-journal1 .journal-cover-display { background: #1e5a3c; border-color: #0f3d24; }
+    .theme-journal2 .journal-cover-display { background: #22577a; border-color: #1f3a52; }
+    .theme-journal3 .journal-cover-display { background: #8b1e2f; border-color: #5a111a; }
+
+    .six-finger-hand {
+      width: 100px;
+      height: 100px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+      animation: pulseHand 3s ease-in-out infinite alternate;
+    }
+    @keyframes pulseHand {
+      0% { transform: scale(1); filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+      100% { transform: scale(1.05); filter: drop-shadow(0 6px 12px rgba(223, 167, 39, 0.4)); }
+    }
+    .journal-section-title {
+      font-family: var(--font-cursive);
+      font-size: 1.1rem;
+      color: var(--accent);
+      border-bottom: 2px dashed rgba(90, 56, 37, 0.3);
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+    }
+    .journal-meta-row {
+      font-size: 0.8rem;
+      color: #2c1609;
+      margin-bottom: 4px;
+    }
+    .journal-discovery-text {
+      font-family: var(--font-garamond);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      color: #6d543e;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    .journal-entry {
+      margin-bottom: 20px;
+      border-bottom: 1px dotted rgba(90,56,37,0.25);
+      padding-bottom: 12px;
+      text-align: left;
+    }
+    .journal-entry:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+    .journal-entry-title {
+      font-family: var(--font-cursive);
+      font-size: 0.95rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .journal-entry-text {
+      font-family: var(--font-garamond);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #3b2314;
+    }
+    .journal-sketch-box {
+      border: 1px dashed rgba(90,56,37,0.3);
+      background: rgba(255,255,255,0.4);
+      border-radius: 6px;
+      padding: 12px;
+      margin: 8px 0;
+      text-align: center;
+      font-family: var(--font-cursive);
+      font-size: 0.75rem;
+      color: #7c4e33;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
+    }
+    .journal-cipher-alert {
+      font-family: var(--font-cursive);
+      font-size: 0.75rem;
+      color: #8b1e2f;
+      background: rgba(139, 30, 47, 0.08);
+      padding: 6px 10px;
+      border-left: 3px solid #8b1e2f;
+      border-radius: 0 4px 4px 0;
+      margin: 8px 0;
+      text-align: left;
+    }
+
+    
+    .secret-lab-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+    }
+    .lab-panel {
+      width: 100%;
+      background: linear-gradient(180deg, #1d222b, #12151b);
+      border: 3px solid #3c4858;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.8);
+      color: #cfd8dc;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 500px;
+    }
+    .portal-spinning-core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,255,255,0.2) 0%, rgba(124,77,255,0.15) 50%, transparent 70%);
+      filter: blur(10px);
+      z-index: 1;
+      pointer-events: none;
+      display: none;
+    }
+    .portal-spinning-core.active {
+      display: block;
+      animation: spinPortal 6s linear infinite, pulsePortal 2.5s ease-in-out infinite alternate;
+    }
+    @keyframes spinPortal {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    @keyframes pulsePortal {
+      0% { width: 280px; height: 280px; opacity: 0.7; }
+      100% { width: 340px; height: 340px; opacity: 1; filter: blur(4px) drop-shadow(0 0 25px #00ffff); }
+    }
+    .portal-vortex-svg {
+      width: 100%;
+      height: 100%;
+      stroke: #00e5ff;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      opacity: 0.85;
+    }
+    .lab-workbench {
+      width: 100%;
+      min-height: 240px;
+      border: 2px dashed #455a64;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.4);
+      margin-top: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .slots-board {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 10px;
+      z-index: 5;
+      position: relative;
+      width: 100%;
+    }
+    .journal-slot-target {
+      width: 110px;
+      height: 140px;
+      border: 2px dashed #ffb300;
+      border-radius: 8px;
+      background: rgba(255,179,0,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: var(--font-cursive);
+      font-size: 0.7rem;
+      color: #ffb300;
+      position: relative;
+      transition: background-color 0.3s;
+    }
+    .journal-slot-target.highlight {
+      background: rgba(255,179,0,0.15);
+      border-color: #ffd54f;
+    }
+    .combined-blueprint-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 15, 27, 0.95);
+      z-index: 12;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease-in-out;
+    }
+    .combined-blueprint-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .blueprint-sheet {
+      width: 460px;
+      height: 230px;
+      background: #111a2e;
+      border: 3px solid #3366cc;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
+      border-radius: 6px;
+      position: relative;
+      display: flex;
+      padding: 8px;
+      justify-content: space-between;
+    }
+    .blueprint-page-part {
+      width: 32%;
+      height: 100%;
+      border-right: 1px dashed rgba(0, 229, 255, 0.2);
+      position: relative;
+    }
+    .blueprint-page-part:last-child {
+      border-right: none;
+    }
+    .blueprint-svg-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.75;
+      animation: blueprintPulse 2s ease-in-out infinite alternate;
+    }
+    @keyframes blueprintPulse {
+      0% { opacity: 0.6; }
+      100% { opacity: 0.9; }
+    }
+    .draggable-journal-book {
+      width: 90px;
+      height: 120px;
+      border-radius: 6px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+      position: absolute;
+      cursor: grab;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+      z-index: 10;
+    }
+    .draggable-journal-book:active {
+      cursor: grabbing;
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+      z-index: 100 !important;
+    }
+    .draggable-journal-book.j1 { background: #1e5a3c; border: 2px solid #0f3d24; }
+    .draggable-journal-book.j2 { background: #22577a; border: 2px solid #1f3a52; }
+    .draggable-journal-book.j3 { background: #8b1e2f; border: 2px solid #5a111a; }
+    
+    .draggable-journal-book .mini-hand {
+      width: 45px;
+      height: 45px;
+      pointer-events: none;
+    }
+    .bill-cipher-wrap {
+      position: absolute;
+      top: -150px;
+      left: 50%;
+      transform: translate(-50%, 0) scale(0.2);
+      z-index: 15;
+      opacity: 0;
+      transition: all 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      pointer-events: none;
+    }
+    .bill-cipher-wrap.summoned {
+      top: 20px;
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .bill-floating-img {
+      width: 140px;
+      animation: billFloat 4s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 15px #ffd54f);
+    }
+    @keyframes billFloat {
+      0% { transform: translateY(0) rotate(-3deg); }
+      100% { transform: translateY(-15px) rotate(3deg); }
+    }
+    .bill-speech-bubble {
+      background: #ffffff;
+      border: 3px solid #ffb300;
+      border-radius: 14px;
+      padding: 12px 16px;
+      width: 280px;
+      font-family: var(--font-cursive);
+      font-size: 0.85rem;
+      color: #000000;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      margin-top: 10px;
+      animation: bubbleFloat 4s ease-in-out infinite alternate-reverse;
+    }
+    .bill-speech-bubble::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      border-left: 3px solid #ffb300;
+      border-top: 3px solid #ffb300;
+    }
+    @keyframes bubbleFloat {
+      0% { transform: translateY(-5px); }
+      100% { transform: translateY(5px); }
+    }
+    @keyframes shakeScreen {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10%, 30%, 50%, 70%, 90% { transform: translate(-5px, 8px) rotate(-1deg); }
+      20%, 40%, 60%, 80% { transform: translate(6px, -4px) rotate(1.5deg); }
+    }
+    .shake-active {
+      animation: shakeScreen 0.5s ease-in-out infinite;
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <nav>
-        <ul>
-            <li><a href="">Anniversary Delivery Service</a></li>
-            <li><a href="" id="timer"></a></li>
-        </ul>
-    </nav>
-    </header>
-    <main>
-      <a href="" class="desktop-icon" id="mail-icon">
-        <img src="img/mail.png" alt="mail">
-        <span>Mail</span>
-      </a>
-      <a href="" class="desktop-icon" id="music-icon">
-        <img src="img/music.png" alt="music">
-        <span>Music</span>
-      </a>
-      <a href="" class="desktop-icon" id="recycle-icon">
-        <img src="img/recycle.png" alt="recycle bin">
-        <span>Bad Days</span>
-      </a>
-      <a href="" class="desktop-icon" id="egg-icon">
-        <img src="img/egg.png" alt="???">
-        <span>???</span>
-      </a>      
+<body class="theme-journal3">
+
+  
+  <div class="balloon-bg" id="balloon-bg"></div>
+
+  
+  <img id="char-dipper" class="char-decor" src="img/mable.png" alt="Dipper Pines">
+  <img id="char-mabel" class="char-decor" src="img/dipper.png" alt="Mabel Pines">
+  <img id="char-bill" class="char-decor" src="img/bill.png" alt="Bill Cipher">
+
+  <header>
+    <h1 id="portal-title">Alisa's Adulthood Portal</h1>
+    <div class="subtitle">A special Gravity Falls space curated by Matýsek ✦</div>
+
+    
+    <div class="countdown-bar" id="countdown-bar">
+      <div class="flip-unit">
+        <div class="flip-card" id="flip-days">00</div>
+        <div class="flip-label">Days</div>
+      </div>
+      <div class="flip-unit">
+        <div class="flip-card" id="flip-hours">00</div>
+        <div class="flip-label">Hours</div>
+      </div>
+      <div class="flip-unit">
+        <div class="flip-card" id="flip-mins">00</div>
+        <div class="flip-label">Mins</div>
+      </div>
+      <div class="flip-unit">
+        <div class="flip-card" id="flip-secs">00</div>
+        <div class="flip-label">Secs</div>
+      </div>
+      <div id="countdown-label" style="font-size:0.8rem; color:#ebdcb9; font-style:italic; width:100%; text-align:center; margin-top:4px; font-family: var(--font-cursive); text-shadow:1px 1px 2px #000;">since turning 18 🎉</div>
+    </div>
+
+    
+    <div class="theme-switcher-box">
+      <label for="select-theme">Active Journal: </label>
+      <select id="select-theme" class="theme-select">
+        <option value="theme-journal1">🌲 Journal 1 (Green)</option>
+        <option value="theme-journal2">🌀 Journal 2 (Blue)</option>
+        <option value="theme-journal3">📖 Journal 3 (Red)</option>
+        <option value="theme-journal18">⚡ Journal 18 (Gold)</option>
+      </select>
+    </div>
+  </header>
+
+  
+  <div class="stats-bar">
+    <a href="index.html" class="back-btn">← Back to Desktop</a>
+    <button id="btn-clear-storage" style="background:#5a111a; border:2px solid #3c1117; color:#ebdcb9; font-family:var(--font-cursive); font-size:0.75rem; padding:6px 12px; border-radius:6px; cursor:pointer; font-weight:bold; box-shadow:0 4px 6px rgba(0,0,0,0.3); transition: transform 0.1s; z-index: 1000;">Reset Progress 🔄</button>
+    <div class="coin-display">
+      <span>Coins:</span>
+      <span id="stat-coins">100</span>
+    </div>
+  </div>
+
+  
+  <div class="tabs">
+    <button class="tab-btn active" data-target="view-places">📍 Places</button>
+    <button class="tab-btn" data-target="view-ciphers">📟 McGucket Terminal</button>
+    <button class="tab-btn" data-target="view-shop">🏕️ Stan's Shop</button>
+    <button class="tab-btn" data-target="view-letter">📜 Ford's Scroll</button>
+  </div>
+
+  
+  <div class="view-container active" id="view-places">
+    <div class="places-layout" id="places-map-layout">
+      <div style="text-align: center;">
+        <h2 style="font-family: var(--font-cursive); font-size: 2.2rem; color: var(--accent); margin-bottom: 4px;">Naše místa v Praze</h2>
+        <p style="font-size: 0.85rem; color: var(--text-muted); font-style: italic; font-family: var(--font-garamond);">Mapa plná společných vzpomínek a okamžiků</p>
+      </div>
       
-      <a href="" class="desktop-icon" id="map-icon">
-        <svg width="86" height="86" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.35)); margin-bottom: 2px;">
-          <path d="M8 12L24 6L40 12L56 6v46L40 58L24 52L8 58V12z" fill="#ebe4d8" stroke="#aa9d88" stroke-width="1.5"/>
-          <path d="M24 6v46L8 58V12L24 6z" fill="rgba(0,0,0,0.03)"/>
-          <path d="M40 12v46L56 6v46L40 58V12z" fill="rgba(0,0,0,0.03)"/>
-          <path d="M14 24c4 2 8-2 12 0s6 8 10 6s8-6 12-4" stroke="#d0bba2" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 3"/>
-          <path d="M32 18c-4.4 0-8 3.6-8 8c0 5.5 8 14 8 14s8-8.5 8-14c0-4.4-3.6-8-8-8z" fill="#f25f5c"/>
-          <circle cx="32" cy="26" r="3.5" fill="#fff"/>
-          <path d="M46 36c-1.6 0-3 1.2-3.6 2.5-.6-1.3-2-2.5-3.6-2.5-2.4 0-4.4 2-4.4 4.5 0 4.5 8 9.5 8 9.5s8-5 8-9.5c0-2.5-2-4.5-4.4-4.5z" fill="#ff2a85"/>
-        </svg>
-        <span>Prague Map</span>
-      </a>
+      <div class="map-container-box">
+        <div id="places-map"></div>
+      </div>
       
-      <a href="" class="desktop-icon" id="journal-icon">
-      <img src="img/journal.png" alt="music">
-        <span>Journal 18</span>
-      </a>
-    </main>
-
-<div class="win-window" id="mail-window" style="display:none;">
-  <div class="win-titlebar" id="mail-titlebar">
-    <button class="win-close" id="mail-close">×</button>
-    <span class="win-title">mail</span>
-    <div style="width:16px"></div>
-  </div>
-  <div class="mail-body" style="position:relative;">
-
-    <div id="inbox-view">
-      <div class="mail-inbox-header">
-        <span class="mail-inbox-header-label">Doručená pošta</span>
-        <span class="mail-badge" id="mail-badge">0</span>
-      </div>
-      <div id="inbox-list"></div>
-    </div>
-
-    <div id="mail-pw-screen" style="display:none;">
-      <div class="mail-pw-row">
-        <div class="pixel-heart">
-          <div class="ph"></div><div class="ph"></div><div class="ph r"></div><div class="ph"></div><div class="ph"></div><div class="ph r"></div><div class="ph"></div>
-          <div class="ph r"></div><div class="ph p"></div><div class="ph r"></div><div class="ph"></div><div class="ph r"></div><div class="ph p"></div><div class="ph r"></div>
-          <div class="ph r"></div><div class="ph p"></div><div class="ph p"></div><div class="ph r"></div><div class="ph p"></div><div class="ph p"></div><div class="ph r"></div>
-          <div class="ph"></div><div class="ph r"></div><div class="ph p"></div><div class="ph p"></div><div class="ph p"></div><div class="ph r"></div><div class="ph"></div>
-          <div class="ph"></div><div class="ph"></div><div class="ph r"></div><div class="ph p"></div><div class="ph r"></div><div class="ph"></div><div class="ph"></div>
-        </div>
-        <span class="mail-pw-label">Zadej heslo</span>
-        <input class="mail-pw-input" type="password" id="mail-pw-input" placeholder="">
-        <button class="mail-pw-btn" id="mail-pw-btn">OK</button>
-      </div>
-      <div id="mail-pw-error" style="display:none; font-size:10px; color:#e84060; padding:4px 0 0 4px;">Špatné heslo :(</div>
-    </div>
-
-    <div id="detail-view" style="display:none;">
-      <div class="mail-letter">
-        <div class="mail-letter-paper">
-          <div class="mail-to">od: <em id="detail-from"></em></div>
-          <div class="mail-detail-subject" id="detail-subject"></div>
-          <div class="mail-letter-text"><p id="detail-body"></p></div>
-        </div>
-        <button class="mail-close-letter" id="detail-back">← zpět</button>
+      <div class="memories-list-panel" id="memories-list-container">
+        
       </div>
     </div>
 
-    <div class="float-hearts" id="float-hearts"></div>
-    <div class="float-sun" id="float-sun"></div>
-
-  </div>
-</div>
-
-<div class="win-window" id="music-window" style="display:none;">
-  <div class="win-titlebar" id="music-titlebar">
-    <button class="win-close" id="music-close">×</button>
-    <span class="win-title">music</span>
-    <div style="width:16px"></div>
-  </div>
-  <div class="music-body">
-    <iframe id="sc-iframe" width="100%" height="0" scrolling="no" frameborder="no" allow="autoplay" src="" style="display:none;"></iframe>
-    <div class="music-top">
-      <div class="vinyl-wrap">
-        <div class="vinyl" id="record">
-          <div class="vinyl-center"></div>
-        </div>
-        <div class="tonearm-wrap">
-          <div class="tonearm" id="tonearm"></div>
-        </div>
-      </div>
-      <div class="music-meta">
-        <div class="music-song-name" id="song-title">—</div>
-        <div class="music-artist-name" id="artist-title">klikni play</div>
-        <div class="music-progress" style="margin-top:10px;">
-          <span class="music-time" id="time-current">0:00</span>
-          <div class="music-bar-bg">
-            <div class="music-bar-fill" id="progress-fill"></div>
-            <input type="range" class="music-range" id="progress-range" value="0" min="0" max="100" step="0.1">
+    
+    <div class="journal-book-layout" id="places-journal-layout" style="display:none;">
+      <div class="journal-book" id="journal-book">
+        <div class="journal-page left-page">
+          <div class="journal-cover-display" id="journal-cover-display">
+            
           </div>
-          <span class="music-time right" id="time-total">0:00</span>
+          <div class="journal-discovery-info">
+            <h3 class="journal-section-title">🕵️ DISCOVERY DOSSIER</h3>
+            <div class="journal-meta-row"><strong>Found By:</strong> <span id="j-meta-finder">Dipper Pines</span></div>
+            <div class="journal-meta-row"><strong>Location:</strong> <span id="j-meta-location">Hollow Tree, GF Forest</span></div>
+            <p class="journal-discovery-text" id="j-meta-desc">Found in a hidden metal tree compartment in the deep woods...</p>
+          </div>
         </div>
-        <div class="music-controls" style="margin-top:6px;">
-          <button class="mc-btn" id="btn-play">▶</button>
-          <button class="mc-btn" id="btn-next">▶|</button>
+        <div class="journal-page right-page">
+          <div class="journal-page-content" id="journal-page-content">
+            
+          </div>
         </div>
       </div>
     </div>
-    <ul class="music-playlist" id="playlist"></ul>
   </div>
-</div>
 
-<div class="win-window" id="recycle-window" style="display:none;">
-  <div class="win-titlebar" id="recycle-titlebar">
-    <button class="win-close" id="recycle-close">×</button>
-    <span class="win-title">bad days</span>
-    <div style="width:16px"></div>
-  </div>
-  <div class="recycle-body">
-    <div class="recycle-empty-icon">&#128465;</div>
-    <div class="recycle-empty-title">Recycle Bin is empty</div>
-    <div class="recycle-empty-text">
-      nothing to delete here, every day with you has been a good one. 2 months down, infinite to go. &#128155;
-    </div>
-  </div>
-</div>
- 
-<div class="win-window" id="egg-window" style="display:none;">
-  <div class="win-titlebar" id="egg-titlebar">
-    <button class="win-close" id="egg-close">×</button>
-    <span class="win-title">found you</span>
-    <div style="width:16px"></div>
-  </div>
-  <div class="egg-body">
-    <div class="egg-confetti" id="egg-confetti"></div>
-    <div class="egg-message" id="egg-message"></div>
-  </div>
-</div>
-
-
-<div class="win-window" id="vault-window" style="display:none;">
-  <div class="win-titlebar" id="vault-titlebar">
-    <button class="win-close" id="vault-close">×</button>
-    <span class="win-title">journal_18.exe</span>
-    <div style="width:16px"></div>
-  </div>
-  <div class="vault-body" style="position:relative;">
-    
-    
-    <div id="vault-pw-screen">
-      <div class="vault-pw-row">
-        <span class="vault-pw-label" style="font-size:12px; font-weight:bold; color:#420e17; margin-bottom:4px;">What is the name of our future kid? 👶</span>
-        <input class="vault-pw-input" type="password" id="vault-pw-input" placeholder="Enter name...">
-        <button class="vault-pw-btn" id="vault-pw-btn">OK</button>
+  
+  <div class="view-container" id="view-ciphers">
+    <div class="mcgucket-container">
+      <div class="mcgucket-header">FIDDLEFORD'S PORTABLE COMPUTER v0.98</div>
+      
+      <div style="font-size:0.75rem; text-align:center; margin-bottom:14px; opacity:0.8;">
+        [RESTORE BROKEN MEMORY SLIDES BY DECRYPTING SYSTEM LOG FILES]
       </div>
-      <div id="vault-pw-error" style="display:none; font-size:10px; color:#e84060; padding-top:4px;">Wrong answer :( Check your journal ciphers!</div>
+
+      
+      <div class="mcgucket-section">
+        <div class="mcgucket-sec-title">🔧 TERMINAL DECODER SHELL</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <input type="text" class="terminal-input-box" id="tool-input" placeholder="Enter text to process...">
+          <div style="display:flex; gap:8px;">
+            <button class="terminal-btn" id="btn-tool-caesar">CAESAR (-3)</button>
+            <button class="terminal-btn" id="btn-tool-atbash">ATBASH</button>
+            <button class="terminal-btn" id="btn-tool-a1z26">A1Z26</button>
+          </div>
+          <div class="terminal-output">
+            <span>SYS_OUTPUT: <span id="tool-output">WAITING FOR INPUT...</span></span>
+            <span class="blink-cursor"></span>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="mcgucket-section">
+        <div class="mcgucket-sec-title">💾 CORRUPT MEMORY SLIDES</div>
+        
+        
+        <div class="crypto-row" style="border-bottom:1px dashed rgba(57,255,20,0.3); padding-bottom:12px; margin-bottom:12px;">
+          <div style="font-size:0.8rem; font-weight:bold;">LOG_FILE: 1_month_anniversary.log</div>
+          <div style="font-size:0.75rem; opacity:0.7;">ENCRYPTION: Caesar (-3)</div>
+          <div class="terminal-output" style="margin:4px 0; font-weight:bold;">PLOXMX WH QDYCGB</div>
+          <input type="text" class="terminal-input-box" id="crypto-ans-1" placeholder="Enter decrypted text...">
+          <button class="terminal-btn" id="btn-crypto-1" style="align-self:flex-start; margin-top:8px;">VERIFY LOG</button>
+          <div id="crypto-status-1" class="crypto-solved"></div>
+        </div>
+
+        
+        <div class="crypto-row" style="border-bottom:1px dashed rgba(57,255,20,0.3); padding-bottom:12px; margin-bottom:12px;">
+          <div style="font-size:0.8rem; font-weight:bold;">LOG_FILE: future_kid_secret.log</div>
+          <div style="font-size:0.75rem; opacity:0.7;">ENCRYPTION: Atbash</div>
+          <div class="terminal-output" style="margin:4px 0; font-weight:bold;">XSXR 50 WĚXVP</div>
+          <input type="text" class="terminal-input-box" id="crypto-ans-2" placeholder="Enter decrypted text...">
+          <button class="terminal-btn" id="btn-crypto-2" style="align-self:flex-start; margin-top:8px;">VERIFY LOG</button>
+          <div id="crypto-status-2" class="crypto-solved"></div>
+        </div>
+
+        
+        <div class="crypto-row" style="padding-bottom:4px;">
+          <div style="font-size:0.8rem; font-weight:bold;">LOG_FILE: couple_surname_code.log</div>
+          <div style="font-size:0.75rem; opacity:0.7;">ENCRYPTION: A1Z26</div>
+          <div class="terminal-output" style="margin:4px 0; font-weight:bold; letter-spacing:1px;">13-18- 1-14-4- 13-18-19- 13-18-11-21-19-15-22-9</div>
+          <input type="text" class="terminal-input-box" id="crypto-ans-3" placeholder="Enter decrypted text...">
+          <button class="terminal-btn" id="btn-crypto-3" style="align-self:flex-start; margin-top:8px;">VERIFY LOG</button>
+          <div id="crypto-status-3" class="crypto-solved"></div>
+        </div>
+      </div>
+      
+      <img src="img/ford.png" alt="Ford Pines" style="position:absolute; right:15px; bottom:15px; height:120px; filter:drop-shadow(0 4px 8px rgba(0,0,0,0.65)); z-index:12; pointer-events:none;">
     </div>
+  </div>
+
+  
+  <div class="view-container" id="view-shop">
+    <div class="shack-shop">
+      
+      
+      <div class="ledger-page-left">
+        <h3 class="ledger-title" style="font-family: var(--font-cursive); text-align: center; color: #5a111a; border-bottom: 2px dashed #5a3825; padding-bottom: 8px; margin-bottom: 16px; font-size: 1.15rem;">📖 SOUVENIR RECORD & LEDGER</h3>
+        <div class="shack-shop-shelves" id="shop-shelves">
+           
+        </div>
+      </div>
+
+      
+      <div class="ledger-page-right">
+        
+        <div class="stan-counter-container" style="margin-bottom: 16px;">
+          
+          <div class="vending-machine-door-trigger" id="vending-machine-trigger" style="position: absolute; left: 12px; top: 12px; cursor: pointer; z-index: 10;" title="Mystery Shack Vending Machine">
+            <img src="img/vault.png" alt="Vending Machine" style="height: 38px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));">
+          </div>
+          
+          <div class="stan-speech-bubble" id="stan-speech">
+            "Welcome to the Mystery Shack! Spend your coins here. No refunds! Seriously, don't even ask."
+          </div>
+          <div class="stan-avatar-wrap">
+            <img src="img/stan.png" alt="Stan Pines">
+          </div>
+        </div>
+
+        
+        <div class="unwrapped-shelf-title">
+          <span>🎒 Purchased Unwrapped Vouchers</span>
+          <span style="font-size:0.75rem; font-weight:normal; opacity:0.8;">(Click to scratch!)</span>
+        </div>
+        <div class="unwrapped-shelf" id="unwrapped-shelf">
+           <div class="shelf-placeholder" style="text-align:center; color:#ebdcb9; font-size:0.8rem; padding:16px 0; width:100%; font-family: monospace;">
+             No unwrapped vouchers on the shelf. Buy some from the ledger!
+           </div>
+        </div>
+
+        
+        <div class="claimed-list">
+          <div class="claimed-header" style="font-family:var(--font-cursive); font-size:1rem; color:var(--primary); margin-bottom:8px;">Claimed Souvenirs:</div>
+          <div id="claimed-vouchers-container" style="display:flex; flex-direction:column; gap:8px;">
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  
+  <div class="view-container" id="view-letter">
+    <div class="letter-paper" id="letter-paper">
+      <span id="letter-text"></span><span class="typewriter-cursor" id="tw-cursor"></span>
+    </div>
+    <button class="btn-action letter-replay-btn" id="btn-replay-letter">✍️ Replay Scroll</button>
+  </div>
+
+  <script>
+    
+    
+    
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+    function getAudioCtx() { if (!audioCtx) audioCtx = new AudioCtx(); return audioCtx; }
+
+    function playSound(freq, duration, type = 'sine', gainVal = 0.05) {
+      try {
+        const ctx = getAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    function playTypewriterClick() {
+      playSound(700 + Math.random()*300, 0.04, 'triangle', 0.02);
+    }
+
+    function playPaperRustle() {
+      try {
+        const ctx = getAudioCtx();
+        const bufferSize = ctx.sampleRate * 0.12;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = (Math.random()*2-1)*0.015*(1-i/bufferSize);
+        const source = ctx.createBufferSource(); source.buffer = buffer;
+        const filter = ctx.createBiquadFilter(); filter.type='bandpass'; filter.frequency.value=1800; filter.Q.value=0.5;
+        source.connect(filter); filter.connect(ctx.destination); source.start();
+      } catch(e) {}
+    }
+
+    function playCoinSound() {
+      playSound(1200, 0.08, 'sine', 0.04);
+      setTimeout(() => playSound(1800, 0.15, 'sine', 0.04), 80);
+    }
+    
+    function playTerminalSuccess() {
+      playSound(800, 0.15, 'sine', 0.04);
+      setTimeout(() => playSound(1200, 0.25, 'sine', 0.04), 100);
+    }
 
     
-    <div id="vault-unlocked-view" style="display:none;">
-      <div class="vault-birthday-header">Access Granted! Unlocking Portal... 🔑✨</div>
-    </div>
+    
+    
+    let bdayCoins = parseInt(localStorage.getItem('ali-bday-coins')) || 100;
+    const claimedVouchers = [];
+    let keyClicks = 0;
+
+    const activeScratchStates = {
+      'canvas-scratch-1': { cost: 30, purchased: false, scratched: false, emoji: '🍿', title: 'Cozy Movie Night', desc: 'Platný na filmový maraton s neomezeným popcornem a mazlením' },
+      'canvas-scratch-2': { cost: 30, purchased: false, scratched: false, emoji: '💆‍♀️', title: 'Wellness Massage', desc: 'Poukaz na relaxační wellness atmosféru a dlouhou masáž zad.' },
+      'canvas-scratch-3': { cost: 50, purchased: false, scratched: false, emoji: '🍹', title: 'Date & Cocktails Night', desc: 'Platný na romantickou večeři a prémiové drinky podle výběru(aperolofc).' },
+      'canvas-scratch-4': { cost: 50, purchased: false, scratched: false, emoji: '🛍️', title: 'Shopping Spree', desc: 'Poukaz na nákupy, kde ti Matýsek koupí dárek a odnese tašky.' }
+    };
+
+    const shopNovelties = {
+      'fez': { cost: 10, purchased: false, emoji: '🎩', title: 'Fez of Mystery', desc: 'Guaranteed to make you look mysterious.' },
+      'eye-jar': { cost: 15, purchased: false, emoji: '🫙', title: 'Eye-Eating Jar', desc: 'Do not stare at them for too long!' },
+      'portal-key': { cost: 200, purchased: false, emoji: '🔑', title: 'Vending Machine Key', desc: 'Opens the secret laboratory door.' },
+      'hair-gel': { cost: 5, purchased: false, emoji: '🧴', title: "Gideon's Hair Gel", desc: 'Stan: "That kid uses enough gel to choke a Cycloptopus!"' },
+      'grappling-hook': { cost: 25, purchased: false, emoji: '🪝', title: "Mabel's Grappling Hook", desc: 'Stan: "Buy at your own risk! Breaks windows in minutes."' },
+      'infinite-pizza': { cost: 80, purchased: false, emoji: '🍕', title: 'Infinite Pizza Slice', desc: 'Stan: "A slice of pizza that regenerates itself? Magic!"' }
+    };
 
     
-    <div class="float-balloons" id="float-balloons"></div>
+    try {
+      const savedScratch = localStorage.getItem('ali-bday-scratch-states');
+      if (savedScratch) {
+        try {
+          Object.assign(activeScratchStates, JSON.parse(savedScratch));
+        } catch (err) {}
+      }
+      const savedNovelties = localStorage.getItem('ali-bday-novelties-states');
+      if (savedNovelties) {
+        try {
+          Object.assign(shopNovelties, JSON.parse(savedNovelties));
+        } catch (err) {}
+      }
+      const savedClaims = localStorage.getItem('ali-bday-claimed-vouchers');
+      if (savedClaims) {
+        try {
+          const parsed = JSON.parse(savedClaims);
+          if (Array.isArray(parsed)) {
+            claimedVouchers.push(...parsed);
+          }
+        } catch (err) {}
+      }
+    } catch(e) {}
 
-  </div>
-</div>
+    const journalData = {
+      'theme-journal1': {
+        num: '1',
+        finder: 'Dipper Pines',
+        location: 'Hollow Tree Compartment',
+        desc: 'Found hidden inside a high-tech metal tree compartment in the deep woods of Gravity Falls by Dipper while hanging signs for Grunkle Stan.',
+        content: `
+          <div class="journal-entry">
+            <div class="journal-entry-title">👁️ FLOATING EYEBALLS</div>
+            <div class="journal-entry-text">
+              These flying anomalies float silently through the pine woods. They watch you. Keep distance! They are harmless but very creepy. Do they report back to HIM?
+            </div>
+          </div>
+          <div class="journal-entry">
+            <div class="journal-entry-title">🐙 CYCLOPTOPUS</div>
+            <div class="journal-entry-text">
+              A one-eyed, multi-tentacled abomination native to the deeper areas of the Gravity Falls Lake. Warning: Do not feed it corn under any circumstances!
+            </div>
+          </div>
+          <div class="journal-entry">
+            <div class="journal-entry-title">📟 CAESAR CODE (-3)</div>
+            <div class="journal-entry-text">
+              Standard encryption for fieldwork notes is Caesar Shift (-3). Slide letters 3 spots backward. GR BRX WKLQN DOL OLNHV PH?
+            </div>
+          </div>
+        `
+      },
+      'theme-journal2': {
+        num: '2',
+        finder: 'Gideon Gleeful',
+        location: 'Elementary School Playground',
+        desc: 'Uncovered by Gideon Gleeful buried underneath the dirt sandbox in the elementary school playground. He used its psychic energy to summon dark powers.',
+        content: `
+          <div class="journal-entry">
+            <div class="journal-entry-title">🌀 PSYCHIC AMULET</div>
+            <div class="journal-entry-text">
+              A glowing blue artifact of psychic power. Grants the wearer telekinetic abilities and mind control. Warning: Prolonged use corrupts the soul!
+            </div>
+          </div>
+          <div class="journal-entry">
+            <div class="journal-entry-title">🌌 PORTAL BLUEPRINTS (PART 2)</div>
+            <div class="journal-entry-text">
+              Contains the calculations for the upper stabilizing rings of the portal. These rings keep the rift from fracturing under gravity loads.
+            </div>
+          </div>
+          <div class="journal-entry">
+            <div class="journal-entry-title">📟 ATBASH CODE</div>
+            <div class="journal-entry-text">
+              Atbash cipher flips the alphabet (A becomes Z, B becomes Y). Extremely useful for hiding spells. R xzm gifhg blf ... irtsg?  GIFHG ML LMV 
+            </div>
+          </div>
+        `
+      },
+      'theme-journal3': {
+        num: '3',
+        finder: 'Dipper Pines',
+        location: 'Hollow Tree, Deep Woods',
+        desc: 'Stanford Pines placed this final journal inside a high-tech retrieval vault hidden inside a metal tree trunk in the forest. Dipper found it while hanging signs.',
+        content: `
+          <div class="journal-entry">
+            <div class="journal-entry-title">🍄 GNOMES</div>
+            <div class="journal-entry-text">
+              Forest creatures #24. Known for pointy red hats, barfing rainbows, and looking for a human queen to form a giant gnome. Weakness: Leaf blowers!
+            </div>
+          </div>
+          <div class="journal-entry">
+            <div class="journal-entry-title">👹 GREMLOBLIN</div>
+            <div class="journal-entry-text">
+              A terrifying hybrid of Gremlin and Goblin. Warning: If you look directly into its eyes, you will see your worst nightmare. Use a mirror to turn its gaze!
+            </div>
+          </div>
+          <div class="journal-entry">
+            <div class="journal-entry-title">🌌 PORTAL BLUEPRINTS & BILL WARNING</div>
+            <div class="journal-entry-text">
+              Contains the lower core schematics. WARNING: DO NOT TRUST THE ONE-EYED BEAST! HE WATCHES! DO NOT SUMMON AT ALL COSTS! 23-8-5-14-7-18-1-22-9-20-25-6-1-12-12-19-1-14-4-5-1-18-20-8-2-5-3-15-13-5-19-19-11-25-6-5-1-18-20-8-5-2-5-1-19-20-23-9-20-8-10-21-19-20-15-14-5-5-25-5.
+            </div>
+          </div>
+        `
+      }
+    };
 
+    function updateCoins(val) {
+      bdayCoins += val;
+      if (bdayCoins < 0) bdayCoins = 0;
+      localStorage.setItem('ali-bday-coins', bdayCoins);
+      document.getElementById('stat-coins').textContent = bdayCoins;
+      if (val > 0) playCoinSound();
+    }
 
-<div class="win-window" id="map-window" style="display:none;">
-  <div class="win-titlebar" id="map-titlebar">
-    <button class="win-close" id="map-close">×</button>
-    <span class="win-title">our_prague_map.exe</span>
-    <div style="width:16px"></div>
-  </div>
-  <div class="map-window-body" style="background:#faf8f6; padding:8px;">
-    <div id="desktop-map-container" style="height:350px; width:450px; max-width:100%;"></div>
-  </div>
-</div>
+    function playErrorBuzz() {
+      playSound(150, 0.25, 'sawtooth', 0.06);
+    }
 
-<footer>
-  <div class="taskbar">
-    <button class="taskbar-button">Clit on me &#128069;</button>
-    <button id="btn-clear-storage" style="background:#444; border:1px solid #666; color:#fff; font-family: 'DM Sans', sans-serif; font-size:11px; padding:3px 6px; border-radius:3px; cursor:pointer; margin-left: 10px; z-index:1000;">Reset Progress 🔄</button>
-    <div class="taskbar-divider"></div>
-    <div class="taskbar-clock" id="taskbar-clock">00:00</div>
-  </div>
-</footer>
+    
+    
+    
+    const birthdayDate = new Date("2026-07-16T21:05:00").getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = birthdayDate - now;
+      const isNegative = diff < 0;
+      const absDiff = Math.abs(diff);
 
-    <script src="js/time.js"></script>
-    <script src="js/music.js"></script>
-    <script src="js/mail.js"></script>
-    <script src="js/wallpaper.js"></script>
-    <script src="js/easter.js"></script>
-    <script src="js/map.js"></script>
-    <script src="js/vault.js"></script>
-    <script>
-      document.getElementById('btn-clear-storage').addEventListener('click', () => {
+      const days = Math.floor(absDiff / (1000 * 60 * 60 * 24));
+      const hrs = Math.floor(absDiff / (1000 * 60 * 60)) % 24;
+      const mins = Math.floor(absDiff / (1000 * 60)) % 60;
+      const secs = Math.floor(absDiff / 1000) % 60;
+      const pad = (n, isNeg) => (isNeg ? '-' : '') + String(n).padStart(2, '0');
+
+      const flipDays = document.getElementById('flip-days');
+      if (flipDays) flipDays.textContent = pad(days, isNegative);
+      const flipHrs = document.getElementById('flip-hours');
+      if (flipHrs) flipHrs.textContent = pad(hrs, isNegative);
+      const flipMins = document.getElementById('flip-mins');
+      if (flipMins) flipMins.textContent = pad(mins, isNegative);
+      const flipSecs = document.getElementById('flip-secs');
+      if (flipSecs) flipSecs.textContent = pad(secs, isNegative);
+
+      const label = document.getElementById('countdown-label');
+      if (label) {
+        label.textContent = isNegative ? "since turning 18 🎉" : "until turning 18 ⏳";
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    
+    
+    
+    const balloonBg = document.getElementById('places-map-layout') || document.body;
+    const floatSymbols = ['🎈', '✨', '🎂', '💖', '⭐', '⚡', '🎉'];
+    function fireCelebration() {
+      for (let i = 0; i < 35; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon-floater';
+        b.innerHTML = floatSymbols[Math.floor(Math.random() * floatSymbols.length)];
+        b.style.left = Math.random() * 95 + '%';
+        b.style.fontSize = (20 + Math.random() * 24) + 'px';
+        b.style.animationDuration = (4 + Math.random() * 5) + 's';
+        b.style.animationDelay = (Math.random() * 2) + 's';
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 9000);
+      }
+    }
+
+    function initBackgroundFloaters() {
+      const existing = document.querySelectorAll('.balloon-floater');
+      existing.forEach(el => el.remove());
+      for (let i = 0; i < 15; i++) {
+        const b = document.createElement('div');
+        b.className = 'balloon-floater';
+        b.innerHTML = floatSymbols[Math.floor(Math.random() * floatSymbols.length)];
+        b.style.left = Math.random() * 95 + '%';
+        b.style.fontSize = (18 + Math.random() * 16) + 'px';
+        b.style.animationDuration = (8 + Math.random() * 9) + 's';
+        b.style.animationDelay = (Math.random() * 8) + 's';
+        document.body.appendChild(b);
+      }
+    }
+
+    const themeSelect = document.getElementById('select-theme');
+    const portalTitle = document.getElementById('portal-title');
+
+    
+    
+    
+    let placesMap = null;
+    let mapMarkers = [];
+    let pragueLocations = [];
+
+    function initPlacesMap() {
+      if (placesMap) {
+        setTimeout(() => placesMap.invalidateSize(), 50);
+        return;
+      }
+      
+      const mapContainer = document.getElementById('places-map');
+      if (!mapContainer) return;
+
+      placesMap = L.map('places-map', {
+        zoomControl: true,
+        scrollWheelZoom: true
+      }).setView([50.083, 14.420], 12);
+      
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap contributors &copy; CartoDB'
+      }).addTo(placesMap);
+      
+      const heartIcon = L.divIcon({
+        className: 'custom-map-pin',
+        html: `<div class="heart-pin-wrapper"><span class="heart-pin-icon">❤️</span></div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 36],
+        popupAnchor: [0, -32]
+      });
+
+      const myHomeIcon = L.divIcon({
+        className: 'custom-map-pin home-pin my-home',
+        html: `<div class="heart-pin-wrapper"><span class="heart-pin-icon">💙</span></div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 36],
+        popupAnchor: [0, -32]
+      });
+
+      const herHomeIcon = L.divIcon({
+        className: 'custom-map-pin home-pin her-home',
+        html: `<div class="heart-pin-wrapper"><span class="heart-pin-icon">💖</span></div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 36],
+        popupAnchor: [0, -32]
+      });
+
+      const catEmoji = L.divIcon({
+        className: 'custom-map-pin home-pin cat',
+        html: `<div class="cat-wrapper"><span class="cat">🐱</span></div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 36],
+        popupAnchor: [0, -32]
+      });
+
+      const iconMap = {
+        'my-home': myHomeIcon,
+        'her-home': herHomeIcon,
+        'heart': heartIcon,
+        'cat': catEmoji
+      };
+
+      pragueLocations = window.pragueLocations || [];
+
+      pragueLocations.forEach((loc, idx) => {
+        let popupHTML = "";
+        if (loc.img) {
+          popupHTML = `
+            <div class="map-polaroid">
+              <div class="polaroid-img-frame">
+                <img src="${loc.img}" alt="${loc.title}">
+              </div>
+              <div class="polaroid-caption">
+                <h3>${loc.title}</h3>
+                <p>${loc.desc}</p>
+              </div>
+            </div>
+          `;
+        } else {
+          popupHTML = `
+            <div class="map-polaroid no-img">
+              <div class="polaroid-caption">
+                <h3>${loc.title}</h3>
+                <p>${loc.desc}</p>
+              </div>
+            </div>
+          `;
+        }
+        
+        const currentIcon = iconMap[loc.iconType] || heartIcon;
+        const marker = L.marker(loc.coords, { icon: currentIcon })
+          .bindPopup(popupHTML, { maxWidth: 260, className: 'leaflet-polaroid-popup' })
+          .addTo(placesMap);
+          
+        mapMarkers.push(marker);
+        
+        marker.on('click', () => {
+          placesMap.setView(loc.coords, 14);
+          highlightMemoryListItem(idx);
+        });
+      });
+      
+      renderMemoriesListPanel();
+    }
+
+    function renderMemoriesListPanel() {
+      const container = document.getElementById('memories-list-container');
+      if (!container) return;
+      container.innerHTML = '';
+      
+      pragueLocations.forEach((loc, idx) => {
+        const item = document.createElement('div');
+        item.className = 'memory-list-item';
+        item.dataset.index = idx;
+        item.innerHTML = `
+          <span class="memory-list-num">${idx + 1}.</span>
+          <span class="memory-list-title">${loc.title}</span>
+          <span class="memory-list-arrow">→</span>
+        `;
+        
+        item.addEventListener('click', () => {
+          highlightMemoryListItem(idx);
+          placesMap.setView(loc.coords, 14);
+          mapMarkers[idx].openPopup();
+        });
+        
+        container.appendChild(item);
+      });
+    }
+
+    function highlightMemoryListItem(index) {
+      const items = document.querySelectorAll('.memory-list-item');
+      items.forEach(it => it.classList.remove('active'));
+      const activeItem = document.querySelector(`.memory-list-item[data-index="${index}"]`);
+      if (activeItem) {
+        activeItem.classList.add('active');
+        activeItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    
+    
+    
+    const caesarBtn = document.getElementById('btn-tool-caesar');
+    if (caesarBtn) {
+      caesarBtn.addEventListener('click', () => {
+        const txt = document.getElementById('tool-input').value;
+        document.getElementById('tool-output').textContent = runCaesar(txt, -3);
+        playTypewriterClick();
+      });
+    }
+
+    const atbashBtn = document.getElementById('btn-tool-atbash');
+    if (atbashBtn) {
+      atbashBtn.addEventListener('click', () => {
+        const txt = document.getElementById('tool-input').value;
+        document.getElementById('tool-output').textContent = runAtbash(txt);
+        playTypewriterClick();
+      });
+    }
+
+    const a1z26Btn = document.getElementById('btn-tool-a1z26');
+    if (a1z26Btn) {
+      a1z26Btn.addEventListener('click', () => {
+        const txt = document.getElementById('tool-input').value;
+        document.getElementById('tool-output').textContent = runA1Z26(txt);
+        playTypewriterClick();
+      });
+    }
+
+    const cVerify1 = document.getElementById('btn-crypto-1');
+    if (cVerify1) {
+      cVerify1.addEventListener('click', () => {
+        const val = document.getElementById('crypto-ans-1').value.trim().toUpperCase();
+        const status = document.getElementById('crypto-status-1');
+        if (val === 'MILUJU TE NAVZDY' || val === 'MILUJU TĚ NAVŽDY') {
+          status.textContent = ">>> LOG DECRYPTED: 'MILUJU TĚ NAVŽDY' ❤️ (+50 Coins)";
+          status.style.color = '#39ff14';
+          updateCoins(50);
+          fireCelebration();
+          cVerify1.style.display = 'none';
+          playTerminalSuccess();
+        } else {
+          status.textContent = ">>> ERROR: INVALID CHECKSUM. DECRYPTION FAILED.";
+          status.style.color = '#ff3333';
+          playErrorBuzz();
+        }
+      });
+    }
+
+    const cVerify2 = document.getElementById('btn-crypto-2');
+    if (cVerify2) {
+      cVerify2.addEventListener('click', () => {
+        const val = document.getElementById('crypto-ans-2').value.trim().toUpperCase();
+        const status = document.getElementById('crypto-status-2');
+        if (val === 'CHCI 50 DECEK' || val === 'CHCI 50 DĚCEK') {
+          status.textContent = ">>> LOG DECRYPTED: 'CHCI 50 DĚCEK' je to ofc moc, ale chci mít hodně verzí tebe (+50 Coins)";
+          status.style.color = '#39ff14';
+          updateCoins(50);
+          fireCelebration();
+          cVerify2.style.display = 'none';
+          playTerminalSuccess();
+        } else {
+          status.textContent = ">>> ERROR: INVALID CHECKSUM. DECRYPTION FAILED.";
+          status.style.color = '#ff3333';
+          playErrorBuzz();
+        }
+      });
+    }
+
+    const cVerify3 = document.getElementById('btn-crypto-3');
+    if (cVerify3) {
+      cVerify3.addEventListener('click', () => {
+        const val = document.getElementById('crypto-ans-3').value.trim().toUpperCase();
+        const status = document.getElementById('crypto-status-3');
+        if (val === 'MR AND MRS MRKUSOVI') {
+          status.textContent = ">>> LOG DECRYPTED: 'MR AND MRS MRKUSOVI' NEJLEPŠÍ DUO (+50 Coins)";
+          status.style.color = '#39ff14';
+          updateCoins(50);
+          fireCelebration();
+          cVerify3.style.display = 'none';
+          playTerminalSuccess();
+        } else {
+          status.textContent = ">>> ERROR: INVALID CHECKSUM. DECRYPTION FAILED.";
+          status.style.color = '#ff3333';
+          playErrorBuzz();
+        }
+      });
+    }
+
+    function runCaesar(str, amount) {
+      if (amount < 0) return runCaesar(str, amount + 26);
+      return str.split('').map(c => {
+        let code = c.charCodeAt(0);
+        if (code >= 65 && code <= 90) return String.fromCharCode(((code - 65 + amount) % 26) + 65);
+        if (code >= 97 && code <= 122) return String.fromCharCode(((code - 97 + amount) % 26) + 97);
+        return c;
+      }).join('');
+    }
+
+    function runAtbash(str) {
+      return str.split('').map(c => {
+        let code = c.charCodeAt(0);
+        if (code >= 65 && code <= 90) return String.fromCharCode(90 - (code - 65));
+        if (code >= 97 && code <= 122) return String.fromCharCode(122 - (code - 97));
+        return c;
+      }).join('');
+    }
+
+    function runA1Z26(str) {
+      str = str.trim();
+      if (/^[0-9\-\s]+$/.test(str)) {
+        return str.split(/\s+/).map(word => {
+          return word.split('-').map(numStr => {
+            const num = parseInt(numStr);
+            if (num >= 1 && num <= 26) return String.fromCharCode(64 + num);
+            return '';
+          }).join('');
+        }).join(' ');
+      } else {
+        return str.toUpperCase().split('').map(c => {
+          let code = c.charCodeAt(0);
+          if (code >= 65 && code <= 90) return code - 64;
+          return c === ' ' ? ' ' : '';
+        }).filter(x => x !== '').map((x, i, arr) => {
+          if (x === ' ') return '  ';
+          if (arr[i+1] === ' ' || i === arr.length - 1) return x;
+          return x + '-';
+        }).join('').replace(/\-\s\s/g, '  ');
+      }
+    }
+
+    
+    
+    
+    let gameCanvas = null;
+    let gameCtx = null;
+    let animationId = null;
+    let gameTimerId = null;
+    let gameScore = 0;
+    let gameLives = 3;
+    let playerX = 160;
+    let keysPressed = {};
+    let entities = [];
+    let pragueSelectedCards = [];
+    let pragueMatchedPairs = 0;
+    let pragueMoves = 0;
+    let gnomeStumps = [];
+    let activeGnome = null;
+    let gnomeWhackParticles = [];
+    let matchTime = 0;
+
+    function stopActiveGame() {
+      if (animationId) { cancelAnimationFrame(animationId); animationId = null; }
+      if (gameTimerId) { clearInterval(gameTimerId); gameTimerId = null; }
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+      entities = [];
+      pragueSelectedCards = [];
+      gnomeWhackParticles = [];
+      keysPressed = {};
+      const canvas = document.getElementById('game-canvas');
+      if (canvas) {
+        canvas.removeEventListener('click', handleCanvasClick);
+      }
+    }
+
+    function handleKeyDown(e) {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') { keysPressed.left = true; e.preventDefault(); }
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') { keysPressed.right = true; e.preventDefault(); }
+    }
+    function handleKeyUp(e) {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keysPressed.left = false;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keysPressed.right = false;
+    }
+
+    function drawCircle(ctx, x, y, r, color) {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
+      let rot = Math.PI / 2 * 3;
+      let x = cx;
+      let y = cy;
+      let step = Math.PI / spikes;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - outerRadius);
+      for (let i = 0; i < spikes; i++) {
+        x = cx + Math.cos(rot) * outerRadius;
+        y = cy + Math.sin(rot) * outerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+        x = cx + Math.cos(rot) * innerRadius;
+        y = cy + Math.sin(rot) * innerRadius;
+        ctx.lineTo(x, y);
+        rot += step;
+      }
+      ctx.lineTo(cx, cy - outerRadius);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    function getGameHtml(themeName) {
+      if (themeName === 'theme-journal1') {
+        return `
+          <div class="arcade-terminal">
+            <div class="arcade-hud">
+              <span>SCORE: <span id="game-score">0</span> | LIVES: <span id="game-lives">❤️❤️❤️</span></span>
+              <span>EYEBALL DODGER 👁️</span>
+            </div>
+            <div class="arcade-screen" id="game-screen">
+              <canvas id="game-canvas" width="320" height="280"></canvas>
+              <div id="game-intro" style="position: absolute; inset: 0; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; z-index: 20;">
+                <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 8px; color: #39ff14;">DODGE EYEBALLS! CATCH COINS!</div>
+                <p style="font-size: 0.72rem; color: #88c888; max-width: 85%; margin-bottom: 14px; font-family: monospace; line-height: 1.3;">Use Arrow Keys or A/D to run as Dipper. Avoid eyeballs 👁️. Catch golden coins 🪙 (+1) and blue stars ⭐ (+2)!</p>
+                <button class="game-play-btn" onclick="startEyeballDodger()">START GAME</button>
+              </div>
+            </div>
+            <div style="display:flex; gap: 24px; z-index: 10;">
+              <button class="game-control-btn" id="game-btn-left">◀</button>
+              <button class="game-control-btn" id="game-btn-right">▶</button>
+            </div>
+          </div>
+        `;
+      } else if (themeName === 'theme-journal2') {
+        return `
+          <div class="arcade-terminal">
+            <div class="arcade-hud">
+              <span>SCORE: <span id="game-score">0</span> | LIVES: <span id="game-lives">❤️❤️❤️</span></span>
+              <span>AMULET CATCH 🌀</span>
+            </div>
+            <div class="arcade-screen" id="game-screen">
+              <canvas id="game-canvas" width="320" height="280"></canvas>
+              <div id="game-intro" style="position: absolute; inset: 0; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; z-index: 20;">
+                <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 8px; color: #80ed99;">CATCH COINS! AVOID LIGHTNING!</div>
+                <p style="font-size: 0.72rem; color: #80ed99; max-width: 85%; margin-bottom: 14px; font-family: monospace; line-height: 1.3;">Move the Psychic Amulet left/right. Catch floating scrolls 📜 (+1) and blue stars ⭐ (+2). Avoid red sparks ⚡ and bombs 💣!</p>
+                <button class="game-play-btn" onclick="startAmuletCatch()">START GAME</button>
+              </div>
+            </div>
+            <div style="display:flex; gap: 24px; z-index: 10;">
+              <button class="game-control-btn" id="game-btn-left">◀</button>
+              <button class="game-control-btn" id="game-btn-right">▶</button>
+            </div>
+          </div>
+        `;
+      } else if (themeName === 'theme-journal3') {
+        return `
+          <div class="arcade-terminal">
+            <div class="arcade-hud">
+              <span>SCORE: <span id="game-score">0</span> | TIME: <span id="game-timer">30s</span></span>
+              <span>GNOME WHACKER 🍄</span>
+            </div>
+            <div class="arcade-screen" id="game-screen">
+              <canvas id="game-canvas" width="320" height="280" style="cursor: pointer;"></canvas>
+              <div id="game-intro" style="position: absolute; inset: 0; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; z-index: 20;">
+                <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 8px; color: #ffb300;">WHACK GNOMES! AVOID WADDLES!</div>
+                <p style="font-size: 0.72rem; color: #ffca28; max-width: 85%; margin-bottom: 14px; font-family: monospace; line-height: 1.3;">Gnomes pop out from tree stumps! Click/tap Gnomes (+2) and Gold Gnomes (+5) to whack them. DO NOT whack Waddles the Pig 🐷 (-1 life)!</p>
+                <button class="game-play-btn" onclick="startGnomeWhacker()">START GAME</button>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (themeName === 'theme-journal18') {
+        return `
+          <div class="arcade-terminal">
+            <div class="arcade-hud">
+              <span>MATCHES: <span id="game-score">0/8</span> | MOVES: <span id="game-moves">0</span></span>
+              <span>PRAGUE MATCH 🏰</span>
+            </div>
+            <div class="arcade-screen" id="game-screen">
+              <div id="game-intro" style="position: absolute; inset: 0; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 10px; z-index: 20;">
+                <div style="font-size: 0.95rem; font-weight: bold; margin-bottom: 8px; color: #e5c158;">PRAGUE MEMORY MATCH</div>
+                <p style="font-size: 0.72rem; color: #ffd54f; max-width: 85%; margin-bottom: 14px; font-family: monospace; line-height: 1.3;">Find pairs of matching polaroids from our Prague dates (+5 coins per pair). Clear the whole board for a +20 coins bonus!</p>
+                <button class="game-play-btn" onclick="startPragueMatch()">START GAME</button>
+              </div>
+              <div class="prague-card-grid" id="prague-card-grid" style="display:none; width:100%; height:100%;">
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      return '';
+    }
+
+    function initJournalGame(themeName) {
+      stopActiveGame();
+      const leftBtn = document.getElementById('game-btn-left');
+      const rightBtn = document.getElementById('game-btn-right');
+      if (leftBtn && rightBtn) {
+        leftBtn.addEventListener('mousedown', () => { keysPressed.left = true; });
+        leftBtn.addEventListener('mouseup', () => { keysPressed.left = false; });
+        rightBtn.addEventListener('mousedown', () => { keysPressed.right = true; });
+        rightBtn.addEventListener('mouseup', () => { keysPressed.right = false; });
+        leftBtn.addEventListener('touchstart', (e) => { keysPressed.left = true; e.preventDefault(); });
+        leftBtn.addEventListener('touchend', (e) => { keysPressed.left = false; e.preventDefault(); });
+        rightBtn.addEventListener('touchstart', (e) => { keysPressed.right = true; e.preventDefault(); });
+        rightBtn.addEventListener('touchend', (e) => { keysPressed.right = false; e.preventDefault(); });
+      }
+    }
+
+    window.startEyeballDodger = function() {
+      const intro = document.getElementById('game-intro');
+      if (intro) intro.style.display = 'none';
+      stopActiveGame();
+      
+      gameCanvas = document.getElementById('game-canvas');
+      if (!gameCanvas) return;
+      gameCtx = gameCanvas.getContext('2d');
+      
+      gameScore = 0;
+      gameLives = 3;
+      playerX = 160;
+      entities = [];
+      
+      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('keyup', handleKeyUp);
+      
+      document.getElementById('game-score').textContent = '0';
+      document.getElementById('game-lives').textContent = '❤️❤️❤️';
+      
+      let nextSpawnTime = 0;
+      
+      function gameLoop(timestamp) {
+        if (keysPressed.left) playerX = Math.max(20, playerX - 4.5);
+        if (keysPressed.right) playerX = Math.min(300, playerX + 4.5);
+        
+        if (timestamp > nextSpawnTime) {
+          const typeVal = Math.random();
+          let type = 'eyeball';
+          if (typeVal > 0.75) type = 'star';
+          else if (typeVal > 0.50) type = 'coin';
+          
+          entities.push({
+            x: 15 + Math.random() * 290,
+            y: -20,
+            type: type,
+            speed: 2 + Math.random() * 2,
+            size: type === 'eyeball' ? 14 : 9
+          });
+          nextSpawnTime = timestamp + 800 + Math.random() * 500;
+        }
+        
+        gameCtx.fillStyle = '#0b160a';
+        gameCtx.fillRect(0, 0, 320, 280);
+        
+        gameCtx.fillStyle = '#060d05';
+        for (let i = 0; i < 6; i++) {
+          let tx = (i * 70) - 20;
+          gameCtx.beginPath();
+          gameCtx.moveTo(tx, 280);
+          gameCtx.lineTo(tx + 40, 100);
+          gameCtx.lineTo(tx + 80, 280);
+          gameCtx.fill();
+        }
+        
+        gameCtx.fillStyle = '#4a2c11';
+        gameCtx.beginPath();
+        gameCtx.arc(playerX, 248, 12, 0, Math.PI * 2);
+        gameCtx.fill();
+        gameCtx.fillStyle = '#fce0d6';
+        gameCtx.beginPath();
+        gameCtx.arc(playerX, 252, 10, 0, Math.PI * 2);
+        gameCtx.fill();
+        gameCtx.fillStyle = '#ffffff';
+        gameCtx.beginPath();
+        gameCtx.arc(playerX, 243, 9, Math.PI, 0);
+        gameCtx.fill();
+        gameCtx.fillStyle = '#22577a';
+        gameCtx.beginPath();
+        gameCtx.ellipse(playerX, 240, 9, 3, 0, 0, Math.PI * 2);
+        gameCtx.fill();
+        gameCtx.fillStyle = '#22577a';
+        gameCtx.beginPath();
+        gameCtx.moveTo(playerX, 237);
+        gameCtx.lineTo(playerX - 3, 242);
+        gameCtx.lineTo(playerX + 3, 242);
+        gameCtx.fill();
+        gameCtx.fillRect(playerX - 0.7, 242, 1.4, 2.5);
+        
+        for (let i = entities.length - 1; i >= 0; i--) {
+          const ent = entities[i];
+          ent.y += ent.speed;
+          
+          if (ent.type === 'eyeball') {
+            drawCircle(gameCtx, ent.x, ent.y, ent.size, '#39ff14');
+            drawCircle(gameCtx, ent.x, ent.y, ent.size - 4, '#ffffff');
+            drawCircle(gameCtx, ent.x, ent.y, ent.size - 8, '#000000');
+            gameCtx.strokeStyle = '#ff3333';
+            gameCtx.beginPath();
+            gameCtx.moveTo(ent.x - 5, ent.y - 2); gameCtx.lineTo(ent.x - 2, ent.y);
+            gameCtx.moveTo(ent.x + 4, ent.y + 3); gameCtx.lineTo(ent.x + 1, ent.y);
+            gameCtx.stroke();
+          } else if (ent.type === 'coin') {
+            drawCircle(gameCtx, ent.x, ent.y, ent.size, '#dfa727');
+            drawCircle(gameCtx, ent.x, ent.y, ent.size - 2.5, '#ffd54f');
+          } else {
+            drawStar(gameCtx, ent.x, ent.y, 5, ent.size, ent.size / 2, '#00e5ff');
+          }
+          
+          const dist = Math.hypot(ent.x - playerX, ent.y - 250);
+          if (dist < ent.size + 10) {
+            entities.splice(i, 1);
+            if (ent.type === 'eyeball') {
+              gameLives--;
+              playSound(160, 0.3, 'sawtooth', 0.08);
+              document.getElementById('game-screen').style.borderColor = '#ff3333';
+              setTimeout(() => document.getElementById('game-screen').style.borderColor = '#1a221a', 150);
+              
+              const livesStr = '❤️'.repeat(Math.max(0, gameLives)) + '🖤'.repeat(Math.max(0, 3 - gameLives));
+              document.getElementById('game-lives').textContent = livesStr;
+              if (gameLives <= 0) {
+                gameOver('Dipper got caught by the forest eyes! 👁️');
+                return;
+              }
+            } else if (ent.type === 'coin') {
+              gameScore++;
+              document.getElementById('game-score').textContent = gameScore;
+              updateCoins(1);
+            } else {
+              gameScore += 2;
+              document.getElementById('game-score').textContent = gameScore;
+              updateCoins(2);
+              playSound(1500, 0.1, 'sine', 0.05);
+            }
+            continue;
+          }
+          
+          if (ent.y > 290) entities.splice(i, 1);
+        }
+        
+        animationId = requestAnimationFrame(gameLoop);
+      }
+      
+      animationId = requestAnimationFrame(gameLoop);
+    };
+
+    window.startAmuletCatch = function() {
+      const intro = document.getElementById('game-intro');
+      if (intro) intro.style.display = 'none';
+      stopActiveGame();
+      
+      gameCanvas = document.getElementById('game-canvas');
+      if (!gameCanvas) return;
+      gameCtx = gameCanvas.getContext('2d');
+      
+      gameScore = 0;
+      gameLives = 3;
+      playerX = 160;
+      entities = [];
+      
+      document.addEventListener('keydown', handleKeyDown);
+      document.addEventListener('keyup', handleKeyUp);
+      
+      document.getElementById('game-score').textContent = '0';
+      document.getElementById('game-lives').textContent = '❤️❤️❤️';
+      
+      let nextSpawnTime = 0;
+      let particleTrail = [];
+      
+      function gameLoop(timestamp) {
+        if (keysPressed.left) playerX = Math.max(20, playerX - 5);
+        if (keysPressed.right) playerX = Math.min(300, playerX + 5);
+        
+        if (Math.random() > 0.4) {
+          particleTrail.push({ x: playerX, y: 250, size: 3 + Math.random() * 4, alpha: 1 });
+        }
+        
+        if (timestamp > nextSpawnTime) {
+          const r = Math.random();
+          let type = 'scroll';
+          if (r > 0.8) type = 'bomb';
+          else if (r > 0.55) type = 'star';
+          else if (r > 0.4) type = 'spark';
+          
+          entities.push({
+            x: 15 + Math.random() * 290,
+            y: -20,
+            type: type,
+            speed: 2.2 + Math.random() * 1.8,
+            size: type === 'scroll' ? 10 : 8,
+            angle: 0,
+            rotSpeed: (Math.random() - 0.5) * 0.05
+          });
+          nextSpawnTime = timestamp + 750 + Math.random() * 400;
+        }
+        
+        const grad = gameCtx.createLinearGradient(0, 0, 0, 280);
+        grad.addColorStop(0, '#09081a');
+        grad.addColorStop(1, '#1b122e');
+        gameCtx.fillStyle = grad;
+        gameCtx.fillRect(0, 0, 320, 280);
+        
+        gameCtx.fillStyle = 'rgba(255,255,255,0.3)';
+        for (let i = 0; i < 12; i++) {
+          let sx = (i * 27 + Math.sin(timestamp/1000 + i)*10) % 320;
+          let sy = (i * 23) % 280;
+          gameCtx.fillRect(sx, sy, 1.5, 1.5);
+        }
+        
+        for (let i = particleTrail.length - 1; i >= 0; i--) {
+          const pt = particleTrail[i];
+          pt.alpha -= 0.05;
+          pt.y += 1.5;
+          if (pt.alpha <= 0) {
+            particleTrail.splice(i, 1);
+            continue;
+          }
+          gameCtx.fillStyle = `rgba(0, 229, 255, ${pt.alpha})`;
+          drawCircle(gameCtx, pt.x + (Math.random()*8-4), pt.y, pt.size, `rgba(0, 229, 255, ${pt.alpha})`);
+        }
+        
+        gameCtx.shadowColor = '#00e5ff';
+        gameCtx.shadowBlur = 10;
+        gameCtx.fillStyle = '#00bcd4';
+        gameCtx.beginPath();
+        gameCtx.ellipse(playerX, 252, 16, 9, 0, 0, Math.PI * 2);
+        gameCtx.fill();
+        gameCtx.strokeStyle = '#e0f7fa';
+        gameCtx.lineWidth = 2.5;
+        gameCtx.stroke();
+        gameCtx.shadowBlur = 0;
+        drawStar(gameCtx, playerX, 252, 4, 6, 2.5, '#ffffff');
+        
+        for (let i = entities.length - 1; i >= 0; i--) {
+          const ent = entities[i];
+          ent.y += ent.speed;
+          ent.angle += ent.rotSpeed;
+          
+          gameCtx.save();
+          gameCtx.translate(ent.x, ent.y);
+          gameCtx.rotate(ent.angle);
+          
+          if (ent.type === 'scroll') {
+            gameCtx.fillStyle = '#f5f5dc';
+            gameCtx.fillRect(-8, -5, 16, 10);
+            gameCtx.fillStyle = '#d2b48c';
+            gameCtx.fillRect(-10, -5, 2, 10);
+            gameCtx.fillRect(8, -5, 2, 10);
+            gameCtx.strokeStyle = '#8b4513';
+            gameCtx.lineWidth = 1;
+            gameCtx.beginPath();
+            gameCtx.moveTo(-5, 0); gameCtx.lineTo(5, 0);
+            gameCtx.stroke();
+          } else if (ent.type === 'star') {
+            drawStar(gameCtx, 0, 0, 5, ent.size, ent.size/2, '#00e5ff');
+          } else if (ent.type === 'bomb') {
+            drawCircle(gameCtx, 0, 0, ent.size, '#1a1a1a');
+            drawCircle(gameCtx, 0, 0, ent.size - 2, '#3a3a3a');
+            gameCtx.strokeStyle = '#8b5a2b';
+            gameCtx.beginPath(); gameCtx.moveTo(0, -ent.size); gameCtx.quadraticCurveTo(5, -ent.size - 5, 2, -ent.size - 8); gameCtx.stroke();
+            drawStar(gameCtx, 2, -ent.size - 8, 4, 3, 1, '#ff9800');
+          } else {
+            gameCtx.restore();
+            ent.x += Math.sin(ent.y/12) * 2;
+            gameCtx.save();
+            gameCtx.translate(ent.x, ent.y);
+            gameCtx.strokeStyle = '#ff3333';
+            gameCtx.lineWidth = 2.5;
+            gameCtx.beginPath();
+            gameCtx.moveTo(-3, -7); gameCtx.lineTo(2, 0); gameCtx.lineTo(-2, 2); gameCtx.lineTo(4, 8);
+            gameCtx.stroke();
+          }
+          gameCtx.restore();
+          
+          const dist = Math.hypot(ent.x - playerX, ent.y - 250);
+          if (dist < ent.size + 14) {
+            entities.splice(i, 1);
+            if (ent.type === 'bomb' || ent.type === 'spark') {
+              gameLives--;
+              playSound(120, 0.4, 'sawtooth', 0.1);
+              document.getElementById('game-screen').style.borderColor = '#ff3333';
+              setTimeout(() => document.getElementById('game-screen').style.borderColor = '#1a221a', 150);
+              
+              const livesStr = '❤️'.repeat(Math.max(0, gameLives)) + '🖤'.repeat(Math.max(0, 3 - gameLives));
+              document.getElementById('game-lives').textContent = livesStr;
+              if (gameLives <= 0) {
+                gameOver('The Psychic Amulet got overloaded! 🌀');
+                return;
+              }
+            } else if (ent.type === 'scroll') {
+              gameScore++;
+              document.getElementById('game-score').textContent = gameScore;
+              updateCoins(1);
+            } else {
+              gameScore += 2;
+              document.getElementById('game-score').textContent = gameScore;
+              updateCoins(2);
+              playSound(1600, 0.1, 'sine', 0.05);
+            }
+            continue;
+          }
+          
+          if (ent.y > 290) entities.splice(i, 1);
+        }
+        
+        animationId = requestAnimationFrame(gameLoop);
+      }
+      
+      animationId = requestAnimationFrame(gameLoop);
+    };
+
+    window.startGnomeWhacker = function() {
+      const intro = document.getElementById('game-intro');
+      if (intro) intro.style.display = 'none';
+      stopActiveGame();
+      
+      gameCanvas = document.getElementById('game-canvas');
+      if (!gameCanvas) return;
+      gameCtx = gameCanvas.getContext('2d');
+      
+      gameScore = 0;
+      gameLives = 3;
+      gnomeWhackParticles = [];
+      activeGnome = null;
+      
+      gnomeStumps = [
+        { x: 60, y: 90 },  { x: 160, y: 90 },  { x: 260, y: 90 },
+        { x: 60, y: 170 }, { x: 160, y: 170 }, { x: 260, y: 170 },
+        { x: 60, y: 250 }, { x: 160, y: 250 }, { x: 260, y: 250 }
+      ];
+      
+      document.getElementById('game-score').textContent = '0';
+      document.getElementById('game-timer').textContent = '30s';
+      
+      gameCanvas.addEventListener('click', handleCanvasClick);
+      gameCanvas.addEventListener('touchstart', handleCanvasTouch, { passive: true });
+      
+      let secondsLeft = 30;
+      gameTimerId = setInterval(() => {
+        secondsLeft--;
+        const timerSpan = document.getElementById('game-timer');
+        if (timerSpan) timerSpan.textContent = secondsLeft + 's';
+        if (secondsLeft <= 0) {
+          gameOver(`Time is up! You successfully whacked the forest critters! 🍄`);
+        }
+      }, 1000);
+      
+      let nextGnomeTime = 0;
+      
+      function gameLoop(timestamp) {
+        if (!activeGnome && timestamp > nextGnomeTime) {
+          const randomStump = Math.floor(Math.random() * 9);
+          const typeVal = Math.random();
+          let type = 'gnome';
+          if (typeVal > 0.85) type = 'gold_gnome';
+          else if (typeVal > 0.65) type = 'waddles';
+          
+          activeGnome = {
+            stumpIndex: randomStump,
+            type: type,
+            yOffset: 0,
+            state: 'popup',
+            timer: timestamp + 800 + Math.random() * 600
+          };
+        }
+        
+        gameCtx.fillStyle = '#102e16';
+        gameCtx.fillRect(0, 0, 320, 280);
+        
+        gnomeStumps.forEach(stump => {
+          gameCtx.fillStyle = '#4a2c11';
+          gameCtx.beginPath();
+          gameCtx.ellipse(stump.x, stump.y, 28, 12, 0, 0, Math.PI * 2);
+          gameCtx.fill();
+          gameCtx.fillStyle = '#8b5a2b';
+          gameCtx.beginPath();
+          gameCtx.ellipse(stump.x, stump.y, 22, 9, 0, 0, Math.PI * 2);
+          gameCtx.fill();
+          gameCtx.strokeStyle = '#5a3825';
+          gameCtx.lineWidth = 1;
+          gameCtx.stroke();
+        });
+        
+        if (activeGnome) {
+          const stump = gnomeStumps[activeGnome.stumpIndex];
+          if (activeGnome.state === 'popup') {
+            activeGnome.yOffset += 3.5;
+            if (activeGnome.yOffset >= 35) {
+              activeGnome.yOffset = 35;
+              activeGnome.state = 'idle';
+            }
+          } else if (activeGnome.state === 'idle') {
+            if (timestamp > activeGnome.timer) {
+              activeGnome.state = 'retreat';
+            }
+          } else if (activeGnome.state === 'retreat') {
+            activeGnome.yOffset -= 3.5;
+            if (activeGnome.yOffset <= 0) {
+              activeGnome = null;
+              nextGnomeTime = timestamp + 300 + Math.random() * 400;
+            }
+          }
+          
+          if (activeGnome) {
+            const gy = stump.y - activeGnome.yOffset;
+            gameCtx.save();
+            gameCtx.beginPath();
+            gameCtx.rect(stump.x - 30, stump.y - 48, 60, 48);
+            gameCtx.clip();
+            
+            if (activeGnome.type === 'gnome' || activeGnome.type === 'gold_gnome') {
+              const capColor = activeGnome.type === 'gold_gnome' ? '#ffd700' : '#ff3333';
+              gameCtx.fillStyle = '#ffffff';
+              gameCtx.beginPath();
+              gameCtx.arc(stump.x, gy + 10, 10, 0, Math.PI * 2);
+              gameCtx.fill();
+              gameCtx.fillStyle = '#fce0d6';
+              gameCtx.beginPath();
+              gameCtx.arc(stump.x, gy, 8, 0, Math.PI * 2);
+              gameCtx.fill();
+              gameCtx.fillStyle = capColor;
+              gameCtx.beginPath();
+              gameCtx.moveTo(stump.x - 9, gy - 2);
+              gameCtx.lineTo(stump.x, gy - 25);
+              gameCtx.lineTo(stump.x + 9, gy - 2);
+              gameCtx.fill();
+              gameCtx.fillStyle = '#ff8a80';
+              gameCtx.beginPath();
+              gameCtx.arc(stump.x, gy + 2, 2.5, 0, Math.PI * 2);
+              gameCtx.fill();
+            } else {
+              gameCtx.fillStyle = '#f8bbd0';
+              gameCtx.beginPath();
+              gameCtx.arc(stump.x, gy + 4, 11, 0, Math.PI * 2);
+              gameCtx.fill();
+              gameCtx.fillStyle = '#f48fb1';
+              gameCtx.beginPath();
+              gameCtx.moveTo(stump.x - 10, gy - 4); gameCtx.lineTo(stump.x - 14, gy - 12); gameCtx.lineTo(stump.x - 5, gy - 6);
+              gameCtx.moveTo(stump.x + 10, gy - 4); gameCtx.lineTo(stump.x + 14, gy - 12); gameCtx.lineTo(stump.x + 5, gy - 6);
+              gameCtx.fill();
+              gameCtx.fillStyle = '#f48fb1';
+              gameCtx.beginPath();
+              gameCtx.ellipse(stump.x, gy + 7, 5, 3.5, 0, 0, Math.PI * 2);
+              gameCtx.fill();
+              gameCtx.fillStyle = '#880e4f';
+              gameCtx.fillRect(stump.x - 2, gy + 6.5, 1, 1.5);
+              gameCtx.fillRect(stump.x + 1, gy + 6.5, 1, 1.5);
+              gameCtx.fillStyle = '#000000';
+              gameCtx.beginPath();
+              gameCtx.arc(stump.x - 4, gy + 1, 1.2, 0, Math.PI*2);
+              gameCtx.arc(stump.x + 4, gy + 1, 1.2, 0, Math.PI*2);
+              gameCtx.fill();
+            }
+            gameCtx.restore();
+          }
+        }
+        
+        for (let i = gnomeWhackParticles.length - 1; i >= 0; i--) {
+          const pt = gnomeWhackParticles[i];
+          pt.y += pt.vy;
+          pt.x += pt.vx;
+          pt.alpha -= 0.04;
+          if (pt.alpha <= 0) {
+            gnomeWhackParticles.splice(i, 1);
+            continue;
+          }
+          drawStar(gameCtx, pt.x, pt.y, 5, pt.size, pt.size / 2, `rgba(255, 235, 59, ${pt.alpha})`);
+        }
+        
+        animationId = requestAnimationFrame(gameLoop);
+      }
+      
+      animationId = requestAnimationFrame(gameLoop);
+    };
+
+    function handleCanvasTouch(e) {
+      if (e.touches && e.touches[0]) {
+        const rect = gameCanvas.getBoundingClientRect();
+        const clickX = (e.touches[0].clientX - rect.left) * (gameCanvas.width / rect.width);
+        const clickY = (e.touches[0].clientY - rect.top) * (gameCanvas.height / rect.height);
+        processWhackClick(clickX, clickY);
+      }
+    }
+
+    function handleCanvasClick(e) {
+      const rect = gameCanvas.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left) * (gameCanvas.width / rect.width);
+      const clickY = (e.clientY - rect.top) * (gameCanvas.height / rect.height);
+      processWhackClick(clickX, clickY);
+    }
+
+    function processWhackClick(clickX, clickY) {
+      if (!activeGnome || activeGnome.state === 'retreat') return;
+      const stump = gnomeStumps[activeGnome.stumpIndex];
+      const gy = stump.y - activeGnome.yOffset;
+      const dist = Math.hypot(clickX - stump.x, clickY - gy);
+      
+      if (dist < 32) {
+        for (let k = 0; k < 8; k++) {
+          gnomeWhackParticles.push({
+            x: clickX,
+            y: clickY,
+            vx: (Math.random() - 0.5) * 5,
+            vy: (Math.random() - 0.5) * 5 - 2,
+            size: 4 + Math.random() * 4,
+            alpha: 1
+          });
+        }
+        
+        if (activeGnome.type === 'gnome') {
+          gameScore++;
+          document.getElementById('game-score').textContent = gameScore;
+          updateCoins(2);
+          playSound(900, 0.1, 'sine', 0.06);
+        } else if (activeGnome.type === 'gold_gnome') {
+          gameScore += 3;
+          document.getElementById('game-score').textContent = gameScore;
+          updateCoins(5);
+          playSound(1400, 0.18, 'sine', 0.06);
+        } else {
+          playSound(180, 0.35, 'sawtooth', 0.1);
+          updateCoins(-5);
+          gameScore = Math.max(0, gameScore - 2);
+          document.getElementById('game-score').textContent = gameScore;
+          document.getElementById('game-screen').style.borderColor = '#ff3333';
+          setTimeout(() => document.getElementById('game-screen').style.borderColor = '#1a221a', 150);
+        }
+        activeGnome.state = 'retreat';
+      }
+    }
+
+    window.startPragueMatch = function() {
+      document.getElementById('game-intro').style.display = 'none';
+      const grid = document.getElementById('prague-card-grid');
+      grid.style.display = 'grid';
+      grid.innerHTML = '';
+      stopActiveGame();
+      
+      pragueMatchedPairs = 0;
+      pragueSelectedCards = [];
+      pragueMoves = 0;
+      
+      document.getElementById('game-score').textContent = '0/8';
+      document.getElementById('game-moves').textContent = '0';
+      
+      const pragueShuffled = [...pragueEmojis, ...pragueEmojis].sort(() => Math.random() - 0.5);
+      
+      pragueShuffled.forEach((emoji, idx) => {
+        const card = document.createElement('div');
+        card.className = 'prague-card';
+        card.dataset.idx = idx;
+        
+        card.innerHTML = `
+          <div class="prague-card-inner" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; backface-visibility:hidden;">
+            ❓
+          </div>
+        `;
+        
+        card.addEventListener('click', () => clickPragueCard(card, emoji, idx));
+        grid.appendChild(card);
+      });
+    };
+
+    function clickPragueCard(card, emoji, idx) {
+      if (card.classList.contains('flipped') || pragueSelectedCards.length >= 2) return;
+      
+      card.classList.add('flipped');
+      card.innerHTML = `
+        <div class="prague-card-inner" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; transform: rotateY(180deg); backface-visibility:hidden;">
+          ${emoji}
+        </div>
+      `;
+      playSound(600, 0.05, 'sine', 0.03);
+      
+      pragueSelectedCards.push({ card, emoji, idx });
+      
+      if (pragueSelectedCards.length === 2) {
+        pragueMoves++;
+        document.getElementById('game-moves').textContent = pragueMoves;
+        
+        const first = pragueSelectedCards[0];
+        const second = pragueSelectedCards[1];
+        
+        if (first.emoji === second.emoji) {
+          pragueMatchedPairs++;
+          document.getElementById('game-score').textContent = `${pragueMatchedPairs}/8`;
+          updateCoins(5);
+          playSound(900, 0.15, 'sine', 0.04);
+          
+          first.card.style.borderColor = '#39ff14';
+          second.card.style.borderColor = '#39ff14';
+          
+          pragueSelectedCards = [];
+          if (pragueMatchedPairs === 8) {
+            setTimeout(() => { 
+              updateCoins(20); 
+              gameOver('You matched all polaroids! 💖 (+20 coins bonus!)'); 
+            }, 600);
+          }
+        } else {
+          setTimeout(() => {
+            first.card.classList.remove('flipped');
+            first.card.style.borderColor = '#dfa727';
+            first.card.innerHTML = `<div class="prague-card-inner" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; backface-visibility:hidden;">❓</div>`;
+            
+            second.card.classList.remove('flipped');
+            second.card.style.borderColor = '#dfa727';
+            second.card.innerHTML = `<div class="prague-card-inner" style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; backface-visibility:hidden;">❓</div>`;
+            
+            pragueSelectedCards = [];
+            playSound(220, 0.15, 'sawtooth', 0.04);
+          }, 900);
+        }
+      }
+    }
+
+    function gameOver(msg) {
+      stopActiveGame();
+      const screen = document.getElementById('game-screen');
+      if (!screen) return;
+      
+      const grid = document.getElementById('prague-card-grid');
+      if (grid) grid.style.display = 'none';
+      
+      let intro = document.getElementById('game-intro');
+      if (!intro) {
+        intro = document.createElement('div');
+        intro.id = 'game-intro';
+        screen.appendChild(intro);
+      }
+      
+      intro.style.display = 'flex';
+      intro.style.position = 'absolute';
+      intro.style.inset = '0';
+      intro.style.background = 'rgba(0,0,0,0.92)';
+      intro.style.flexDirection = 'column';
+      intro.style.alignItems = 'center';
+      intro.style.justifyContent = 'center';
+      intro.style.textAlign = 'center';
+      intro.style.padding = '10px';
+      intro.style.zIndex = '20';
+      
+      intro.innerHTML = `
+        <div style="font-size: 1rem; font-weight: bold; color: #39ff14; margin-bottom: 6px;">GAME OVER</div>
+        <div style="font-size: 0.72rem; color: #ccc; margin-bottom: 14px; max-width: 90%; font-family: monospace;">${msg}</div>
+        <button class="game-play-btn" onclick="startFreshGame()">PLAY AGAIN</button>
+      `;
+      playTerminalSuccess();
+    }
+
+    window.startFreshGame = function() {
+      const activeTheme = localStorage.getItem('ali-bday-theme') || 'theme-journal3';
+      if (activeTheme === 'theme-journal1') startEyeballDodger();
+      else if (activeTheme === 'theme-journal2') startAmuletCatch();
+      else if (activeTheme === 'theme-journal3') startGnomeWhacker();
+      else startPragueMatch();
+    };
+
+    function applyTheme(themeName) {
+      stopActiveGame();
+      document.body.className = '';
+      document.body.classList.add(themeName);
+      localStorage.setItem('ali-bday-theme', themeName);
+
+      if (themeName === 'theme-journal1') {
+        document.body.style.backgroundImage = 'url("/img/school.webp")';
+      } else if (themeName === 'theme-journal2') {
+        document.body.style.backgroundImage = 'url("/img/portal.webp")';
+      } else if (themeName === 'theme-journal3') {
+        document.body.style.backgroundImage = 'url("https://i.pinimg.com/736x/d3/5d/15/d35d1532cd7ae1f8188b84bdf16df894.jpg")';
+      } else if (themeName === 'theme-journal18') {
+        document.body.style.backgroundImage = 'url("https://wallpapercat.com/w/full/0/d/5/46753-3840x2160-desktop-4k-gravity-falls-background.jpg")';
+      }
+
+      const placesMapLayout = document.getElementById('places-map-layout');
+      const placesJournalLayout = document.getElementById('places-journal-layout');
+      const firstTabBtn = document.querySelector('.tab-btn[data-target="view-places"]');
+      
+      const coverDiv = document.getElementById('journal-cover-display');
+      if (coverDiv) {
+        if (themeName === 'theme-journal1') {
+          coverDiv.classList.add('has-img');
+          coverDiv.innerHTML = `<img src="img/journal1_cover.jpg" alt="Journal 1 Cover">`;
+        } else if (themeName === 'theme-journal2') {
+          coverDiv.classList.add('has-img');
+          coverDiv.innerHTML = `<img src="img/journal2_cover.jpg" alt="Journal 2 Cover">`;
+        } else if (themeName === 'theme-journal3') {
+          coverDiv.classList.add('has-img');
+          coverDiv.innerHTML = `<img src="img/journal3_cover.jpg" alt="Journal 3 Cover">`;
+        } else {
+          coverDiv.classList.remove('has-img');
+          coverDiv.innerHTML = `
+            <svg viewBox="0 0 100 100" class="six-finger-hand">
+              <path d="M30,75 C20,70 12,58 10,48 C8,40 13,38 17,45 C20,50 25,56 25,56 C25,56 23,28 26,24 C29,20 33,23 33,28 C33,35 34,42 34,42 C34,42 35,18 39,15 C42,12 46,15 46,20 C46,28 47,38 47,38 C47,38 49,14 53,12 C57,10 60,14 60,20 C60,28 60,38 60,38 C60,38 62,15 66,14 C70,13 73,17 73,23 C73,31 72,40 72,40 C72,40 75,20 79,20 C83,20 84,26 82,32 C78,44 76,55 70,68 C64,78 45,80 30,75 Z" fill="#dfa727" stroke="#332211" stroke-width="2.5" stroke-linejoin="round" />
+              <text x="50" y="55" font-family="'Playfair Display', serif" font-weight="bold" font-size="20" fill="#2c1609" text-anchor="middle">18</text>
+            </svg>
+          `;
+        }
+      }
+
+      if (themeName === 'theme-journal18') {
+        if (placesMapLayout) placesMapLayout.style.display = 'block';
+        if (placesJournalLayout) placesJournalLayout.style.display = 'none';
+        if (firstTabBtn) firstTabBtn.innerHTML = '📍 Places';
+      } else {
+        if (placesMapLayout) placesMapLayout.style.display = 'none';
+        if (placesJournalLayout) placesJournalLayout.style.display = 'block';
+        
+        let emoji = '🌲', jName = 'Journal 1';
+        if (themeName === 'theme-journal2') { emoji = '🌀'; jName = 'Journal 2'; }
+        if (themeName === 'theme-journal3') { emoji = '📖'; jName = 'Journal 3'; }
+        if (firstTabBtn) firstTabBtn.innerHTML = `${emoji} ${jName}`;
+        
+        const data = journalData[themeName];
+        if (data) {
+          const finderText = document.getElementById('j-meta-finder');
+          if (finderText) finderText.textContent = data.finder;
+          const locText = document.getElementById('j-meta-location');
+          if (locText) locText.textContent = data.location;
+          const descText = document.getElementById('j-meta-desc');
+          if (descText) descText.textContent = data.desc;
+          
+          const contentDiv = document.getElementById('journal-page-content');
+          if (contentDiv) {
+            contentDiv.innerHTML = data.content + getGameHtml(themeName);
+            initJournalGame(themeName);
+          }
+        }
+      }
+      initBackgroundFloaters();
+    }
+
+    const savedTheme = localStorage.getItem('ali-bday-theme') || 'theme-journal3';
+    if (themeSelect) {
+      themeSelect.value = savedTheme;
+      themeSelect.addEventListener('change', (e) => {
+        applyTheme(e.target.value);
+      });
+    }
+    applyTheme(savedTheme);
+
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const containers = document.querySelectorAll('.view-container');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        playPaperRustle();
+        tabBtns.forEach(b => b.classList.remove('active'));
+        containers.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.getAttribute('data-target');
+        document.getElementById(target).classList.add('active');
+        if (target === 'view-letter' && !letterStarted) startLetterTyping();
+        if (target === 'view-places') {
+          setTimeout(() => { if (!placesMap) initPlacesMap(); else placesMap.invalidateSize(); }, 150);
+        }
+      });
+    });
+
+    function initPage() {
+      if (window.name === "claim-bill-cosmic-deal") {
+        const dealVoucher = { emoji: '👁️', title: "Bill's Cosmic Deal", desc: "Infinite love, luck and magic. deal of a lifetime! ⚡" };
+        const exists = claimedVouchers.some(v => v.title === dealVoucher.title);
+        if (!exists) {
+          claimedVouchers.push(dealVoucher);
+          localStorage.setItem('ali-bday-claimed-vouchers', JSON.stringify(claimedVouchers));
+        }
+        window.name = "";
+      }
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      if (tabParam === 'shop') {
+        const shopBtn = document.querySelector('[data-target="view-shop"]');
+        if (shopBtn) shopBtn.click();
+      } else if (document.getElementById('view-places').classList.contains('active')) {
+        setTimeout(initPlacesMap, 150);
+      }
+      updateCoins(0);
+      renderShopShelves();
+      renderClaimedVouchers();
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', initPage);
+    } else {
+      initPage();
+    }
+
+    let scratchStates = {};
+    function updateStanSpeech(text) {
+      const speech = document.getElementById('stan-speech');
+      if (speech) {
+        speech.textContent = text;
+        playSound(280 + Math.random() * 80, 0.05, 'triangle', 0.02);
+      }
+    }
+
+    function renderShopShelves() {
+      const shelves = document.getElementById('shop-shelves');
+      if (!shelves) return;
+      shelves.innerHTML = '';
+      
+      Object.keys(activeScratchStates).forEach(id => {
+        const item = activeScratchStates[id];
+        const row = document.createElement('div');
+        row.className = `ledger-item-row ${item.purchased ? 'purchased-crossed' : ''}`;
+        row.innerHTML = `
+          <span class="ledger-item-title">${item.emoji} ${item.title}</span>
+          <span class="ledger-item-dots"></span>
+          <span class="ledger-item-price">${item.cost} Coins</span>
+          <button class="ledger-buy-btn" id="btn-buy-${id}" ${item.purchased ? 'disabled' : ''}>
+            ${item.purchased ? 'SOLD' : 'BUY'}
+          </button>
+        `;
+        shelves.appendChild(row);
+        const btn = row.querySelector(`#btn-buy-${id}`);
+        if (btn) btn.addEventListener('click', () => buyVoucher(id));
+      });
+
+      Object.keys(shopNovelties).forEach(id => {
+        const item = shopNovelties[id];
+        const row = document.createElement('div');
+        row.className = `ledger-item-row ${item.purchased ? 'purchased-crossed' : ''}`;
+        let buyText = 'BUY';
+        if (id === 'portal-key' && keyClicks >= 5 && item.cost === 0) buyText = 'CLAIM';
+        row.innerHTML = `
+          <span class="ledger-item-title" id="emoji-${id}" style="cursor:pointer;">${item.emoji} ${item.title}</span>
+          <span class="ledger-item-dots"></span>
+          <span class="ledger-item-price" id="price-${id}">${item.cost} Coins</span>
+          <button class="ledger-buy-btn" id="btn-${id}" ${item.purchased ? 'disabled' : ''}>
+            ${item.purchased ? 'SOLD' : buyText}
+          </button>
+        `;
+        shelves.appendChild(row);
+        const btn = row.querySelector(`#btn-${id}`);
+        if (btn) btn.addEventListener('click', () => buyNovelty(id));
+        if (id === 'portal-key') {
+          const emojiEl = row.querySelector(`#emoji-portal-key`);
+          if (emojiEl) emojiEl.addEventListener('click', clickKey);
+        }
+      });
+      const shelf = document.getElementById('unwrapped-shelf');
+      if (shelf) {
+        shelf.innerHTML = '';
+        let hasUnwrapped = false;
+        Object.keys(activeScratchStates).forEach(id => {
+          const item = activeScratchStates[id];
+          if (item.purchased && !item.scratched) {
+            hasUnwrapped = true;
+            addVoucherToUnwrappedShelf(id);
+          }
+        });
+        if (!hasUnwrapped) {
+          shelf.innerHTML = `<div class="shelf-placeholder" style="text-align:center; color:#ebdcb9; font-size:0.8rem; padding:16px 0; width:100%; font-family: monospace;">No unwrapped vouchers on the shelf. Buy some from the ledger!</div>`;
+        }
+      }
+    }
+
+    function saveShopStates() {
+      try {
+        localStorage.setItem('ali-bday-scratch-states', JSON.stringify(activeScratchStates));
+        localStorage.setItem('ali-bday-novelties-states', JSON.stringify(shopNovelties));
+      } catch(e) {}
+    }
+
+    function buyVoucher(id) {
+      const item = activeScratchStates[id];
+      if (item.purchased) return;
+      if (bdayCoins >= item.cost) {
+        updateCoins(-item.cost);
+        item.purchased = true;
+        saveShopStates();
+        updateStanSpeech(`"Excellent choice! You bought the ${item.title}! Check your unwrapped inventory below to scratch and claim it!"`);
+        renderShopShelves();
+      } else {
+        updateStanSpeech(`"Hey, kid! You don't have enough coins for that! Play the arcade games to earn more!"`);
+        playErrorBuzz();
+      }
+    }
+
+    function buyNovelty(id) {
+      const item = shopNovelties[id];
+      if (item.purchased) return;
+      if (id === 'portal-key' && keyClicks < 5 && item.cost === 999) { clickKey(); return; }
+      if (bdayCoins >= item.cost) {
+        updateCoins(-item.cost);
+        item.purchased = true;
+        claimedVouchers.push({ emoji: item.emoji, title: item.title, desc: item.desc });
+        localStorage.setItem('ali-bday-claimed-vouchers', JSON.stringify(claimedVouchers));
+        saveShopStates();
+        renderShopShelves();
+        renderClaimedVouchers();
+        if (id === 'fez') {
+          updateStanSpeech(`"Ah, the Fez! It's a symbol of leadership and mystery. You look 50% more handsome already. No refunds!"`);
+        } else if (id === 'eye-jar') {
+          updateStanSpeech(`"Yikes! The Eye-Eating Jar! Don't shake it... wait, it's shaking the whole laboratory!"`);
+          document.body.classList.add('shake-active');
+          setTimeout(() => document.body.classList.remove('shake-active'), 800);
+        } else if (id === 'portal-key') {
+          updateStanSpeech(`"You got the key! Click on the vending machine on the left of my counter to unlock my secret lab door!"`);
+          const trigger = document.getElementById('vending-machine-trigger');
+          if (trigger) trigger.style.boxShadow = '0 0 15px #ffd54f';
+        } else if (id === 'polaroid-box') {
+          updateStanSpeech(`"Ah! You opened the Anniversary Polaroid Box! Let's unwrap this sweet memory..."`);
+          showPolaroidMemory();
+        } else if (id === 'hair-gel') {
+          updateStanSpeech(`"Heh, enjoy the greasy hair kid! Gideon uses enough hair gel to float a battleship!"`);
+        } else if (id === 'grappling-hook') {
+          updateStanSpeech(`"Whoa! Watch where you point that launcher, kid! You almost took my nose off!"`);
+          document.body.classList.add('shake-active');
+          setTimeout(() => document.body.classList.remove('shake-active'), 400);
+        } else if (id === 'infinite-pizza') {
+          updateStanSpeech(`"A slice of pizza that regenerates itself? If I had this, I'd never spend a dime on food!"`);
+        }
+      } else {
+        updateStanSpeech(`"You think these top-shelf items are free? Come back when you've got the cash!"`);
+        playErrorBuzz();
+      }
+    }
+
+    function clickKey() {
+      if (shopNovelties['portal-key'].purchased) return;
+      if (keyClicks < 5) {
+        keyClicks++;
+        playSound(300 + keyClicks * 50, 0.08, 'triangle', 0.04);
+        if (keyClicks < 5) {
+          updateStanSpeech(`"Hey, hands off! The key is worth 999 coins! ... Wait, you clicked it? (${keyClicks}/5) Keep pressing it..."`);
+        } else {
+          shopNovelties['portal-key'].cost = 0;
+          renderShopShelves();
+          updateStanSpeech(`"Alright, you wore me down. 0 coins! Just click buy and take it, don't tell the health inspectors!"`);
+        }
+      }
+    }
+
+    function showPolaroidMemory() {
+      const images = [
+        { url: 'img/polaroid_coffee.jpg', caption: 'Cozy coffee dates in Prague ☕' },
+        { url: 'img/polaroid_movie.jpg', caption: 'Snuggling up for a movie night 🍿' },
+        { url: 'img/polaroid_sunset.jpg', caption: 'Beautiful sunset strolls 🌅' },
+        { url: 'img/polaroid_stars.jpg', caption: 'Stargazing together ✨' }
+      ];
+      const item = images[Math.floor(Math.random() * images.length)];
+      const overlay = document.createElement('div');
+      overlay.style.position = 'fixed'; overlay.style.inset = '0'; overlay.style.background = 'rgba(0,0,0,0.85)';
+      overlay.style.zIndex = '99999'; overlay.style.display = 'flex'; overlay.style.flexDirection = 'column';
+      overlay.style.alignItems = 'center'; overlay.style.justifyContent = 'center'; overlay.style.cursor = 'pointer';
+      overlay.innerHTML = `
+        <div style="background:#fff; padding:16px; border-radius:4px; transform:rotate(${(Math.random()*6-3)}deg); width:280px; text-align:center;">
+          <img src="${item.url}" style="width:100%; border:1px solid #ddd; margin-bottom:10px;">
+          <div style="font-family:'Special Elite', monospace; color:#222;">${item.caption}</div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      overlay.addEventListener('click', () => { overlay.remove(); });
+    }
+
+    function addVoucherToUnwrappedShelf(id) {
+      const item = activeScratchStates[id];
+      const shelf = document.getElementById('unwrapped-shelf');
+      if (!shelf || document.getElementById(`unwrapped-card-${id}`)) return;
+      const card = document.createElement('div');
+      card.className = 'voucher-card';
+      card.id = `unwrapped-card-${id}`;
+      card.innerHTML = `
+        <span class="voucher-badge">${item.title}</span>
+        <div class="canvas-container-box"><canvas id="${id}" width="240" height="120"></canvas></div>
+      `;
+      shelf.appendChild(card);
+      initSingleScratchCanvas(id);
+    }
+
+    function initSingleScratchCanvas(canvasId) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#dfa727'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = '#5a3825'; ctx.font = 'bold 12px monospace';
+      ctx.textAlign = 'center'; ctx.fillText('SCRATCH SOUVENIR 🏷️', canvas.width/2, canvas.height/2);
+      scratchStates[canvasId] = { ctx, scratching: false, revealed: false };
+      canvas.addEventListener('mousedown', (e) => { scratchStates[canvasId].scratching = true; scratch(e, canvasId); });
+      window.addEventListener('mouseup', () => { scratchStates[canvasId].scratching = false; checkScratchPercentage(canvasId); });
+      canvas.addEventListener('mousemove', (e) => scratch(e, canvasId));
+    }
+
+    function scratch(e, canvasId) {
+      const s = scratchStates[canvasId];
+      if (!s || !s.scratching || s.revealed) return;
+      const canvas = document.getElementById(canvasId);
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+      const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+      s.ctx.globalCompositeOperation = 'destination-out';
+      s.ctx.beginPath(); s.ctx.arc(x, y, 16, 0, Math.PI * 2); s.ctx.fill();
+    }
+
+    function checkScratchPercentage(canvasId) {
+      const s = scratchStates[canvasId];
+      const canvas = document.getElementById(canvasId);
+      if (!s || !canvas) return;
+      const imgData = s.ctx.getImageData(0,0,canvas.width,canvas.height);
+      let transparent = 0;
+      for (let i = 3; i < imgData.data.length; i += 4) if (imgData.data[i] === 0) transparent++;
+      if ((transparent / (imgData.data.length / 4)) * 100 > 45) {
+        s.revealed = true;
+        const mainState = activeScratchStates[canvasId];
+        mainState.scratched = true;
+        saveShopStates();
+        claimedVouchers.push({ emoji: mainState.emoji, title: mainState.title, desc: mainState.desc });
+        localStorage.setItem('ali-bday-claimed-vouchers', JSON.stringify(claimedVouchers));
+        renderClaimedVouchers();
+        setTimeout(() => { document.getElementById(`unwrapped-card-${canvasId}`).remove(); renderShopShelves(); }, 500);
+      }
+    }
+
+    function renderClaimedVouchers() {
+      const container = document.getElementById('claimed-vouchers-container');
+      if (!container) return;
+      container.innerHTML = '';
+      claimedVouchers.forEach(v => {
+        const row = document.createElement('div');
+        row.className = 'claimed-item-row';
+        row.style.cursor = 'pointer';
+        row.innerHTML = `<span style="font-size:1.5rem;">${v.emoji}</span><div><b>${v.title}</b><br>${v.desc}</div>`;
+        row.addEventListener('click', () => showSouvenirDetail(v));
+        container.appendChild(row);
+      });
+    }
+
+    function showSouvenirDetail(v) {
+      const overlay = document.createElement('div');
+      overlay.style.position = 'fixed';
+      overlay.style.inset = '0';
+      overlay.style.background = 'rgba(0,0,0,0.85)';
+      overlay.style.zIndex = '100000';
+      overlay.style.display = 'flex';
+      overlay.style.flexDirection = 'column';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.cursor = 'pointer';
+      overlay.innerHTML = `
+        <div class="souvenir-detail-card" style="background: #f4edd8; border: 4px solid #5a3825; border-radius: 12px; padding: 24px; width: 300px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.8); cursor: default; position: relative; font-family: 'Special Elite', monospace; color: #2d1d15; transform: rotate(${(Math.random()*4-2)}deg);">
+          <button style="position: absolute; right: 10px; top: 10px; background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: #5a3825; font-weight: bold;" id="detail-close-btn">×</button>
+          <div style="font-size: 4rem; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));">${v.emoji}</div>
+          <h2 style="font-size: 1.3rem; margin-bottom: 10px; color: #5a111a; border-bottom: 2px dashed #5a3825; padding-bottom: 8px;">${v.title}</h2>
+          <p style="font-size: 0.9rem; line-height: 1.4; color: #5a3825;">${v.desc}</p>
+          <div style="margin-top: 16px; font-size: 0.75rem; color: #8c7355; font-style: italic;">★ Mystery Shack Official Souvenir ★</div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+      const closeBtn = overlay.querySelector('#detail-close-btn');
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        overlay.remove();
+      });
+      overlay.addEventListener('click', () => {
+        overlay.remove();
+      });
+      overlay.querySelector('.souvenir-detail-card').addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+    }
+
+    const triggerBtn = document.getElementById('vending-machine-trigger');
+    if (triggerBtn) {
+      triggerBtn.addEventListener('click', () => {
+        if (!shopNovelties['portal-key'].purchased) {
+          updateStanSpeech(`"Hey! Keep your hands off that vending machine! It's locked. Unless you've got the Gold Vending Machine Key, scram!"`);
+          playErrorBuzz();
+        } else {
+          updateStanSpeech(`"What? You got the key?! Alright, sliding the vending machine open. Let's see what's down there..."`);
+          setTimeout(() => { window.location.href = 'vault.html'; }, 1500);
+        }
+      });
+    }
+
+    const letterMessage = `Drahá Ali,\n\nVšechno nejlepší k tvým osmnáctým narozeninám! 🎂\n\nDnes je ten velký den, kdy se z tebe oficiálně stává dospělá slečna, a já jsem neskutečně vděčný a šťastný, že můžu tyto jedinečné okamžiky slavit po tvém boku.\n\nOd chvíle, co jsi vstoupila do mého života, jsi ho naplnila neuvěřitelnou spoustou radosti, smíchu a jen dobrých pocitů. Tvůj roztomilý smích, tvoje sarkastické vtípky, tvoje nadšení do společných dates... to všechno je to nejcennější, co mám. Děláš mě lepším člověkem a přeju si jediné, dělat tě šťastnou každý den.\n\nAť ti 18 let přinese spoustu splněných snů, úspěchů a hlavně hodně úsměvů. Můžeš si být naprosto jistá, že ať tě v životě potká cokoliv, nikdy na to nebudeš sama. Vždycky budu stát pevně vedle tebe, s láskou tě držet za ruku a podporovat tě ve všem, co si vymyslíš.\n\nKrásné narozeniny, moje milovaná Ali!\n\nS celým svým srdcem,\nTvůj Matýsek 💕`;
+
+    let letterStarted = false;
+    let letterTypingId = null;
+
+    function startLetterTyping() {
+      letterStarted = true;
+      const textEl = document.getElementById('letter-text');
+      const cursor = document.getElementById('tw-cursor');
+      if (!textEl || !cursor) return;
+      textEl.textContent = '';
+      cursor.style.display = 'inline-block';
+      let i = 0;
+      if (letterTypingId) clearInterval(letterTypingId);
+      letterTypingId = setInterval(() => {
+        if (i < letterMessage.length) {
+          textEl.textContent += letterMessage[i];
+          if (letterMessage[i] !== ' ' && letterMessage[i] !== '\n') playTypewriterClick();
+          i++;
+        } else {
+          clearInterval(letterTypingId);
+          letterTypingId = null;
+        }
+      }, 50);
+    }
+
+    document.getElementById('btn-replay-letter').addEventListener('click', () => {
+      letterStarted = false;
+      startLetterTyping();
+    });
+
+    const clearStorageBtn = document.getElementById('btn-clear-storage');
+    if (clearStorageBtn) {
+      clearStorageBtn.addEventListener('click', () => {
         if (confirm("Are you sure you want to clear your progress and reset the system?")) {
           localStorage.clear();
           window.location.reload();
         }
       });
-    </script>
+    }
+  </script>
 </body>
 </html>
