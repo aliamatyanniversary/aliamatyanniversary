@@ -314,7 +314,7 @@ footer {
   font-weight: 300;
 }
 
-/* progress */
+
 .music-progress {
   display: flex;
   align-items: center;
@@ -871,9 +871,7 @@ footer {
   }
 }
 
-/* ==========================================================================
-   Vault Specific Styling (Journal 18 Feature)
-   ========================================================================== */
+
 
 #journal-icon svg {
   cursor: pointer;
@@ -894,7 +892,7 @@ footer {
   min-height: 140px;
 }
 
-/* Password Screen */
+
 .vault-pw-row {
   display: flex;
   flex-direction: column;
@@ -937,7 +935,7 @@ footer {
   border-bottom-color: #bbb;
 }
 
-/* Unlocked View */
+
 .vault-birthday-header {
   font-size: 13px;
   font-weight: bold;
@@ -947,7 +945,7 @@ footer {
   text-shadow: 0.5px 0.5px 0 #fff;
 }
 
-/* Floating celebration styling */
+
 .float-balloons {
   position: absolute;
   inset: 0;
@@ -1014,9 +1012,7 @@ footer {
   }
 }
 
-/* ==========================================================================
-   Map Window & Custom Pin Styling
-   ========================================================================== */
+
 
 #map-window {
   width: 466px;
@@ -1035,7 +1031,7 @@ footer {
   border: 1px solid #999;
 }
 
-/* Map Markers and Popups */
+
 .custom-map-pin {
   background: transparent;
   border: none;
@@ -1071,7 +1067,7 @@ footer {
   border-color: #ec4899;
 }
 
-/* Leaflet Polaroid popups */
+
 .leaflet-polaroid-popup .leaflet-popup-content-wrapper {
   background: #faf6f0;
   border-radius: 4px;
