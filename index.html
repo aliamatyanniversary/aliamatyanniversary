@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ali & maty<3</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Leaflet CSS for Map -->
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
@@ -35,7 +35,7 @@
         <img src="img/egg.png" alt="???">
         <span>???</span>
       </a>      
-      <!-- Prague Map Desktop Icon -->
+      
       <a href="" class="desktop-icon" id="map-icon">
         <svg width="86" height="86" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.35)); margin-bottom: 2px;">
           <path d="M8 12L24 6L40 12L56 6v46L40 58L24 52L8 58V12z" fill="#ebe4d8" stroke="#aa9d88" stroke-width="1.5"/>
@@ -48,7 +48,7 @@
         </svg>
         <span>Prague Map</span>
       </a>
-      <!-- Gravity Falls Journal 18 Icon -->
+      
       <a href="" class="desktop-icon" id="journal-icon">
       <img src="img/journal.png" alt="music">
         <span>Journal 18</span>
@@ -169,7 +169,7 @@
   </div>
 </div>
 
-<!-- Gravity Falls Journal 18 Window -->
+
 <div class="win-window" id="vault-window" style="display:none;">
   <div class="win-titlebar" id="vault-titlebar">
     <button class="win-close" id="vault-close">×</button>
@@ -178,7 +178,7 @@
   </div>
   <div class="vault-body" style="position:relative;">
     
-    <!-- PASSWORD SCREEN -->
+    
     <div id="vault-pw-screen">
       <div class="vault-pw-row">
         <span class="vault-pw-label" style="font-size:12px; font-weight:bold; color:#420e17; margin-bottom:4px;">What is the name of our future kid? 👶</span>
@@ -188,18 +188,18 @@
       <div id="vault-pw-error" style="display:none; font-size:10px; color:#e84060; padding-top:4px;">Wrong answer :( Check your journal ciphers!</div>
     </div>
 
-    <!-- UNLOCKED VIEW -->
+    
     <div id="vault-unlocked-view" style="display:none;">
       <div class="vault-birthday-header">Access Granted! Unlocking Portal... 🔑✨</div>
     </div>
 
-    <!-- Container for floating particles -->
+    
     <div class="float-balloons" id="float-balloons"></div>
 
   </div>
 </div>
 
-<!-- Prague Map Window -->
+
 <div class="win-window" id="map-window" style="display:none;">
   <div class="win-titlebar" id="map-titlebar">
     <button class="win-close" id="map-close">×</button>
@@ -214,6 +214,7 @@
 <footer>
   <div class="taskbar">
     <button class="taskbar-button">Clit on me &#128069;</button>
+    <button id="btn-clear-storage" style="background:#444; border:1px solid #666; color:#fff; font-family: 'DM Sans', sans-serif; font-size:11px; padding:3px 6px; border-radius:3px; cursor:pointer; margin-left: 10px; z-index:1000;">Reset Progress 🔄</button>
     <div class="taskbar-divider"></div>
     <div class="taskbar-clock" id="taskbar-clock">00:00</div>
   </div>
@@ -226,5 +227,13 @@
     <script src="js/easter.js"></script>
     <script src="js/map.js"></script>
     <script src="js/vault.js"></script>
+    <script>
+      document.getElementById('btn-clear-storage').addEventListener('click', () => {
+        if (confirm("Are you sure you want to clear your progress and reset the system?")) {
+          localStorage.clear();
+          window.location.reload();
+        }
+      });
+    </script>
 </body>
 </html>
