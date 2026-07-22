@@ -53,6 +53,11 @@
       <img src="img/journal.png" alt="music">
         <span>Journal 18</span>
       </a>
+
+      <a href="" class="desktop-icon" id="anniversary-icon">
+        <img src="img/anniversary.png" alt="3 Months">
+        <span>3 Months <3</span>
+      </a>
     </main>
 
 <div class="win-window" id="mail-window" style="display:none;">
@@ -211,9 +216,33 @@
   </div>
 </div>
 
+<div class="win-window" id="anniversary-window" style="display:none; width:340px; top:80px; left:160px; z-index:120;">
+  <div class="win-titlebar" id="anniversary-titlebar">
+    <button class="win-close" id="anniversary-close">×</button>
+    <span class="win-title">3_month_anniversary.exe</span>
+    <div style="width:16px"></div>
+  </div>
+  <div class="anniversary-body" style="background:#fffcfd; padding:18px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; position:relative; overflow:hidden;">
+    <div style="font-size:32px; line-height:1; filter: drop-shadow(0 2px 4px rgba(232,64,96,0.3));">💖 3 MONTHS 💖</div>
+    <div style="font-size:14px; font-weight:bold; color:#420e17;">Šťastné 3. měsíční výročí, Ali!</div>
+    <div style="font-size:11px; color:#555; line-height:1.6; max-width:280px; font-style:italic;">
+      "Dneska je to přesně 3 měsíce (91+ dní), co jsme spolu! Každý den s tebou je ten nejlepší na světě. Děkuju ti za všechno, miláčku."
+    </div>
+    <div id="anniversary-hearts-box" style="background:#fff3f6; border:1px dashed #e84060; border-radius:6px; padding:10px 14px; width:100%; cursor:pointer; transition:transform 0.2s;" onclick="celebrate3Months()">
+      <div style="font-size:12px; font-weight:bold; color:#e84060;">🎁 Click for celebration & surprise!</div>
+      <div style="font-size:10px; color:#888;">(Sparks a heart fireworks display ✨)</div>
+    </div>
+    <div id="anniversary-surprise-msg" style="display:none; font-size:11px; color:#c03050; font-weight:500; background:#ffe6ec; padding:10px 12px; border-radius:6px; width:100%; border:1px solid #f080a0;">
+      MOC MI UŽ CHYBÍŠ, už se těším na naše dates a až tě zase uvidím :3
+    </div>
+    <div class="float-hearts" id="anniversary-float-hearts"></div>
+  </div>
+</div>
+
 <footer>
   <div class="taskbar">
     <button class="taskbar-button">Clit on me &#128069;</button>
+
     <div class="taskbar-divider"></div>
     <div class="taskbar-clock" id="taskbar-clock">00:00</div>
   </div>
@@ -226,13 +255,6 @@
     <script src="js/easter.js"></script>
     <script src="js/map.js"></script>
     <script src="js/vault.js"></script>
-    <script>
-      document.getElementById('btn-clear-storage').addEventListener('click', () => {
-        if (confirm("Are you sure you want to clear your progress and reset the system?")) {
-          localStorage.clear();
-          window.location.reload();
-        }
-      });
-    </script>
+    <script src="js/3ann.js"></script>
 </body>
 </html>
