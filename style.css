@@ -443,6 +443,8 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .pixel-heart {
@@ -567,6 +569,8 @@ footer {
   border-bottom-color: #aaa;
   padding: 14px 16px;
   min-height: 120px;
+  max-height: 250px;
+  overflow-y: auto;
   font-size: 12px;
   color: #333;
   line-height: 1.8;
