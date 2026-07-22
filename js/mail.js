@@ -77,6 +77,15 @@ const mails = [
     date: '10. 7',
     hearts: true,
     sun: true,
+  },
+  {
+    from: 'Matýsek',
+    subject: 'Krásné 3 month anniversary',
+    snippet: 'Krásné 3 month anniversary...',
+    password: 'wednesdat',
+    body: `Krásné 3 month anniversary Ali<3 Moc ti děkuji za krásné chvilky, hodně smíchu, radosti, vtipů a lásky i takhle přes display. I když to není moc ideální, já si myslím že to zvládneme. Je to už jen měsíc a pár týdnu right?<3 \n A pořád mě trápí jedna věc, já vím že tohle nejde nijak zastavit, protože vždy se někdy něco najde a úplně každý člověk to takhle má, ale... chci jen říct že bych mohl psát o tvých insecurities, mohl bych o jejich kráse psát hodiny, dny, měsíce a roky. Můžeš jim říkat jakkoliv špatně, ale vždy mě bolí když vidím jak se v mých očí ta nejkrásnější holka podceňuje a myslí si, že je něco míň. Můžu o nich psát až budu mít numb prsty, malovat tě až mi budou oči padat, ale i přes to budu mít o čem psát, co malovat. Jak tě můžu přirovnávat k slunci i když ono má nesrovnalosti, a ty nemáš žádné? \n Jěště jednou krásné anniversary, moc tě miluju<3`,
+    date: '22. 7',
+    hearts: true,
   }
   
 ];
